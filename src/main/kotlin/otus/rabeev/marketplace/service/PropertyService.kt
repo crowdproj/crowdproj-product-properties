@@ -10,6 +10,12 @@ class PropertyService {
 //        TODO("service that take properties from DB")
 
 
-        return ResponseDto(id = "id", name = "name", description = "description", units = "10", unitMain = "unitMain")
+        return ResponseDto(
+            id = "id",
+            name = "name",
+            description = "description",
+            units = "10",
+            unitMain = "unitMain"
+        )
     }
 }

@@ -5,6 +5,5 @@ import javax.validation.constraints.NotBlank
 
 data class RequestDto(
     @get: UUID
-    @get: NotBlank
     val id: String
 )

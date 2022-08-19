@@ -13,7 +13,6 @@ import javax.validation.Valid
 
 @RestController
 @Api(description = "Проба пера")
-//@RequestMapping("/controller")
 class Controller(private val propertyService: PropertyService) {
 
     @PostMapping("/property-request")
