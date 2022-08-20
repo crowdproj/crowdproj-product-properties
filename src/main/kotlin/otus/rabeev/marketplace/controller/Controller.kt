@@ -18,7 +18,6 @@ class Controller(private val propertyService: PropertyService) {
     @PostMapping("/property-request")
     @ApiOperation("Property request")
     fun propertyRequest(
-//      "TODO  @Headers headers: Header,"
         @Valid @RequestBody requestDto: RequestDto
     ): ResponseDto {
         return propertyService.propertyFromDB(requestDto)
