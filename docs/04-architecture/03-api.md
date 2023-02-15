@@ -18,6 +18,5 @@
 1. CRUD (create, read, update, delete) для ProductProperty
     1. create
     2. read по id
-    3. read по списку ids
-    4. update по id
-    5. delete, установка флага deleted.
+    3. update по id
+    4. delete, установка флага deleted.
