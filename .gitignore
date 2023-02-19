@@ -10,6 +10,6 @@ gradle-app.setting
 !gradle-wrapper.jar
 
 # Avoid ignore Gradle wrappper properties
-!gradle-wrapper.properties
+!/gradle/wrapper/gradle-wrapper.properties
 
 /.idea/
