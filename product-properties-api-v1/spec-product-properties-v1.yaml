@@ -1,0 +1,293 @@
+openapi: 3.0.4
+info:
+  title: crowdproj-product-properties
+  description: Microservice for management and provisioning of the physical properties of a product, article, cargo, item
+  contact:
+    name: Sergey Okatov
+    email: sokatov@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/v1
+tags:
+  - name: product-property
+    description: property of a product, article, cargo, item
+
+paths:
+  /product-property/create:
+    post:
+      tags:
+        - product-property
+      summary: Create product property
+      operationId: ProductPropertyCreate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductPropertyCreateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductPropertyCreateResponse'
+
+  /product-properties/read:
+    post:
+      tags:
+        - product-property
+      summary: Read product properties
+      operationId: ProductPropertyRead
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductPropertyReadRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductPropertyReadResponse'
+
+  /product-property/update:
+    post:
+      tags:
+        - product-property
+      summary: Update product property
+      operationId: ProductPropertyUpdate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductPropertyUpdateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductPropertyUpdateResponse'
+
+  /product-property/delete:
+    post:
+      tags:
+        - product-property
+      summary: Delete product property
+      operationId: ProductPropertyDelete
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductPropertyDeleteRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductPropertyDeleteResponse'
+
+components:
+  schemas:
+
+    IProductPropertyRequest:
+      type: object
+      description: Base interface for all requests
+      properties:
+        requestType:
+          type: string
+          description: Field for calculation request type
+          example: create
+        requestId:
+          $ref: '#/components/schemas/RequestId'
+      discriminator:
+        propertyName: requestType
+        mapping:
+          create: '#/components/schemas/ProductPropertyCreateRequest'
+          read: '#/components/schemas/ProductPropertyReadRequest'
+          update: '#/components/schemas/ProductPropertyUpdateRequest'
+          delete: '#/components/schemas/ProductPropertyDeleteRequest'
+
+    IProductPropertyResponse:
+      type: object
+      description: Basic interface for all responses
+      properties:
+        responseType:
+          type: string
+          description: Field for calculation response type
+          example: create
+        requestId:
+          $ref: '#/components/schemas/RequestId'
+        result:
+          $ref: '#/components/schemas/ResponseResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+
+      discriminator:
+        propertyName: responseType
+        mapping:
+          create: '#/components/schemas/ProductPropertyCreateResponse'
+          read: '#/components/schemas/ProductPropertyReadResponse'
+          update: '#/components/schemas/ProductPropertyUpdateResponse'
+          delete: '#/components/schemas/ProductPropertyDeleteResponse'
+          init: '#/components/schemas/ProductPropertyInitResponse'
+
+    Error:
+      $ref: './build/base.yaml#/components/schemas/Error'
+
+    RequestId:
+      $ref: './build/base.yaml#/components/schemas/RequestId'
+
+    UserId:
+      $ref: './build/base.yaml#/components/schemas/UserId'
+
+    ResponseResult:
+      $ref: './build/base.yaml#/components/schemas/ResponseResult'
+
+    RequestDebug:
+      $ref: './build/base.yaml#/components/schemas/CpRequestDebug'
+
+    UnitId:
+      type: string
+      description: Unit ID
+
+    ProductPropertyId:
+      type: string
+      description: Product property ID
+
+    BaseProductProperty:
+      type: object
+      description: Object describes properties that are the same for create and update
+      properties:
+        name:
+          type: string
+          description: Product property name
+        description:
+          type: string
+          description: Product property description
+        unitMain:
+          $ref: '#/components/schemas/UnitId'
+        units:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnitId'
+
+    ProductPropertyCreateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseProductProperty'
+
+    ProductPropertyUpdateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseProductProperty'
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/ProductPropertyId'
+
+    ProductPropertyCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IProductPropertyRequest'
+        - $ref: '#/components/schemas/RequestDebug'
+        - type: object
+          properties:
+            productProperty:
+              $ref: '#/components/schemas/ProductPropertyCreateObject'
+
+    ProductPropertyReadRequest:
+      allOf:
+        - $ref: '#/components/schemas/IProductPropertyRequest'
+        - $ref: '#/components/schemas/RequestDebug'
+        - type: object
+          properties:
+            productPropertyIds:
+              type: array
+              items:
+                $ref: '#/components/schemas/ProductPropertyId'
+
+    ProductPropertyUpdateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IProductPropertyRequest'
+        - $ref: '#/components/schemas/RequestDebug'
+        - type: object
+          properties:
+            productProperty:
+              $ref: '#/components/schemas/ProductPropertyUpdateObject'
+
+    ProductPropertyDeleteRequest:
+      allOf:
+        - $ref: '#/components/schemas/IProductPropertyRequest'
+        - $ref: '#/components/schemas/RequestDebug'
+        - type: object
+          properties:
+            productPropertyId:
+              $ref: '#/components/schemas/ProductPropertyId'
+
+    ProductPropertyResponseObject:
+      allOf:
+        - type: object
+          description: Object that is returned in the backend response
+          properties:
+            id:
+              $ref: '#/components/schemas/ProductPropertyId'
+            deleted:
+              type: boolean
+              description: Product property deletion flag
+              example: false
+        - $ref: '#/components/schemas/BaseProductProperty'
+
+    ProductPropertyResponseSingle:
+      allOf:
+        - type: object
+          description: Response with one product property
+          properties:
+            productProperty:
+              $ref: '#/components/schemas/ProductPropertyResponseObject'
+
+    ProductPropertyResponseMulti:
+      allOf:
+        - type: object
+          description: Response with list of product properties
+          properties:
+            productProperties:
+              type: array
+              items:
+                $ref: '#/components/schemas/ProductPropertyResponseObject'
+
+    ProductPropertyCreateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IProductPropertyResponse'
+        - $ref: '#/components/schemas/ProductPropertyResponseSingle'
+
+    ProductPropertyReadResponse:
+      allOf:
+        - $ref: '#/components/schemas/IProductPropertyResponse'
+        - $ref: '#/components/schemas/ProductPropertyResponseMulti'
+
+    ProductPropertyUpdateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IProductPropertyResponse'
+        - $ref: '#/components/schemas/ProductPropertyResponseSingle'
+
+    ProductPropertyDeleteResponse:
+      allOf:
+        - $ref: '#/components/schemas/IProductPropertyResponse'
+        - $ref: '#/components/schemas/ProductPropertyResponseSingle'
+
+    ProductPropertyInitResponse:
+      allOf:
+        - $ref: '#/components/schemas/IProductPropertyResponse'

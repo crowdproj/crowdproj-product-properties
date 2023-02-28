@@ -4,7 +4,7 @@ plugins {
     kotlin("jvm")
 }
 
-group = "com.crowdproj"
+group = "com.crowdproj.marketplace"
 version = "0.0.1"
 
 allprojects {
