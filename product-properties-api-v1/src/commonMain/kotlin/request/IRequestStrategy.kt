@@ -10,6 +10,7 @@ sealed interface IRequestStrategy : IApiStrategy<IProductPropertyRequest> {
             ReadRequestStrategy,
             UpdateRequestStrategy,
             DeleteRequestStrategy,
+            SearchRequestStrategy
         )
         val membersByDiscriminator = members.associateBy { it.discriminator }
         val membersByClazz = members.associateBy { it.clazz }

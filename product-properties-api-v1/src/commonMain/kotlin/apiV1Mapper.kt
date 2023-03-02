@@ -11,6 +11,7 @@ import kotlinx.serialization.modules.contextual
 val apiV1Mapper = Json {
     classDiscriminator = "_"
     encodeDefaults = true
+    ignoreUnknownKeys = true
 
     serializersModule = SerializersModule {
         polymorphicDefaultSerializer(IProductPropertyRequest::class) {
@@ -20,6 +21,7 @@ val apiV1Mapper = Json {
                 is ProductPropertyReadRequest -> RequestSerializer(ProductPropertyReadRequest.serializer()) as SerializationStrategy<IProductPropertyRequest>
                 is ProductPropertyUpdateRequest -> RequestSerializer(ProductPropertyUpdateRequest.serializer()) as SerializationStrategy<IProductPropertyRequest>
                 is ProductPropertyDeleteRequest -> RequestSerializer(ProductPropertyDeleteRequest.serializer()) as SerializationStrategy<IProductPropertyRequest>
+                is ProductPropertySearchRequest -> RequestSerializer(ProductPropertySearchRequest.serializer()) as SerializationStrategy<IProductPropertyRequest>
                 else -> null
             }
         }
@@ -30,7 +32,7 @@ val apiV1Mapper = Json {
                 is ProductPropertyReadResponse -> ResponseSerializer(ProductPropertyReadResponse.serializer()) as SerializationStrategy<IProductPropertyResponse>
                 is ProductPropertyUpdateResponse -> ResponseSerializer(ProductPropertyUpdateResponse.serializer()) as SerializationStrategy<IProductPropertyResponse>
                 is ProductPropertyDeleteResponse -> ResponseSerializer(ProductPropertyDeleteResponse.serializer()) as SerializationStrategy<IProductPropertyResponse>
-
+                is ProductPropertySearchResponse -> ResponseSerializer(ProductPropertySearchResponse.serializer()) as SerializationStrategy<IProductPropertyResponse>
                 else -> null
             }
         }

@@ -17,6 +17,7 @@ data class PropContext(
 
     var propertyRequest: ProductProperty = ProductProperty(),
     var propertiesRequest: MutableList<ProductProperty> = mutableListOf(),
+    var propertiesFilterRequest: ProductPropertyFilter = ProductPropertyFilter(),
 
     var propertyResponse: ProductProperty = ProductProperty(),
     var propertiesResponse: MutableList<ProductProperty> = mutableListOf(),

@@ -11,6 +11,7 @@ fun PropContext.fromTransport(request: IProductPropertyRequest) = when (request)
     is ProductPropertyReadRequest -> fromTransport(request)
     is ProductPropertyUpdateRequest -> fromTransport(request)
     is ProductPropertyDeleteRequest -> fromTransport(request)
+    is ProductPropertySearchRequest -> fromTransport(request)
     else -> throw UnknownRequestClass(request::class)
 }
 
@@ -45,6 +46,19 @@ fun PropContext.fromTransport(request: ProductPropertyDeleteRequest) {
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
 }
+
+fun PropContext.fromTransport(request: ProductPropertySearchRequest) {
+    command = PropCommand.SEARCH
+    requestId = request.requestId()
+    propertiesFilterRequest = request.productPropertyFilter.toInternal()
+    workMode = request.debug.transportToWorkMode()
+    stubCase = request.debug.transportToStubCase()
+}
+
+private fun ProductPropertySearchFilter?.toInternal() = ProductPropertyFilter(
+    name = this?.name.orEmpty(),
+    description = this?.description.orEmpty()
+)
 
 private fun ProductPropertyCreateObject?.toInternal() = ProductProperty(
     name = this?.name.orEmpty(),

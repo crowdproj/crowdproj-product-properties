@@ -6,4 +6,5 @@ enum class PropCommand {
     READ,
     UPDATE,
     DELETE,
+    SEARCH,
 }

@@ -10,6 +10,7 @@ fun PropContext.toTransportProductProperty(): IProductPropertyResponse = when (v
     PropCommand.READ -> toTransportRead()
     PropCommand.UPDATE -> toTransportUpdate()
     PropCommand.DELETE -> toTransportDelete()
+    PropCommand.SEARCH -> toTransportSearch()
     PropCommand.NONE -> throw UnknownPropCommand(cmd)
 }
 
@@ -39,6 +40,13 @@ fun PropContext.toTransportDelete() = ProductPropertyDeleteResponse(
     result = if (state == PropState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     productProperty = propertyResponse.toTransport()
+)
+
+fun PropContext.toTransportSearch() = ProductPropertySearchResponse(
+    requestId = this.requestId.asString().takeIf { it.isNotBlank() },
+    result = if (state == PropState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    errors = errors.toTransportErrors(),
+    productProperties = propertiesResponse.toTransport()
 )
 
 private fun ProductProperty.toTransport() = ProductPropertyResponseObject(

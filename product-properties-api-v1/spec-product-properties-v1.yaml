@@ -16,7 +16,7 @@ tags:
     description: property of a product, article, cargo, item
 
 paths:
-  /product-property/create:
+  /product/property/create:
     post:
       tags:
         - product-property
@@ -37,7 +37,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProductPropertyCreateResponse'
 
-  /product-properties/read:
+  /product/properties/read:
     post:
       tags:
         - product-property
@@ -58,7 +58,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProductPropertyReadResponse'
 
-  /product-property/update:
+  /product/property/update:
     post:
       tags:
         - product-property
@@ -79,7 +79,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProductPropertyUpdateResponse'
 
-  /product-property/delete:
+  /product/property/delete:
     post:
       tags:
         - product-property
@@ -99,6 +99,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProductPropertyDeleteResponse'
+
+  /product/property/search:
+    post:
+      tags:
+        - product-property
+      summary: Search product property by name, description
+      operationId: ProductPropertySearch
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductPropertySearchRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductPropertySearchResponse'
 
 components:
   schemas:
@@ -120,6 +141,7 @@ components:
           read: '#/components/schemas/ProductPropertyReadRequest'
           update: '#/components/schemas/ProductPropertyUpdateRequest'
           delete: '#/components/schemas/ProductPropertyDeleteRequest'
+          search: '#/components/schemas/ProductPropertySearchRequest'
 
     IProductPropertyResponse:
       type: object
@@ -145,6 +167,7 @@ components:
           read: '#/components/schemas/ProductPropertyReadResponse'
           update: '#/components/schemas/ProductPropertyUpdateResponse'
           delete: '#/components/schemas/ProductPropertyDeleteResponse'
+          search: '#/components/schemas/ProductPropertySearchResponse'
           init: '#/components/schemas/ProductPropertyInitResponse'
 
     Error:
@@ -237,6 +260,26 @@ components:
             productPropertyId:
               $ref: '#/components/schemas/ProductPropertyId'
 
+    ProductPropertySearchRequest:
+      allOf:
+        - $ref: '#/components/schemas/IProductPropertyRequest'
+        - $ref: '#/components/schemas/RequestDebug'
+        - type: object
+          properties:
+            productPropertyFilter:
+              $ref: '#/components/schemas/ProductPropertySearchFilter'
+
+    ProductPropertySearchFilter:
+      type: object
+      description: filters for Product properties search
+      properties:
+        name:
+          type: string
+          description: Product property name
+        description:
+          type: string
+          description: Product property description
+
     ProductPropertyResponseObject:
       allOf:
         - type: object
@@ -287,6 +330,11 @@ components:
       allOf:
         - $ref: '#/components/schemas/IProductPropertyResponse'
         - $ref: '#/components/schemas/ProductPropertyResponseSingle'
+
+    ProductPropertySearchResponse:
+      allOf:
+        - $ref: '#/components/schemas/IProductPropertyResponse'
+        - $ref: '#/components/schemas/ProductPropertyResponseMulti'
 
     ProductPropertyInitResponse:
       allOf:
