@@ -30,6 +30,7 @@ jobs:
     runs-on: ubuntu-22.04
     #    runs-on: macos-latest
     steps:
+      - run: echo "🍏 This job's status is ${{ job.status }}."
       - uses: actions/checkout@v3
 
       - name: Set up JDK 11
