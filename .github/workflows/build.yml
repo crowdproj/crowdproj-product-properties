@@ -3,9 +3,6 @@
 name: 'CI-build'
 
 # Controls when the workflow will run
-
-
-#run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
@@ -28,7 +25,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build", but i testing and add job from documentation :)
+  # This workflow contains a single job called "build"
   build:
     runs-on: ubuntu-22.04
     #    runs-on: macos-latest
@@ -47,53 +44,13 @@ jobs:
       - name: Install curl-dev
         run: sudo apt-get update && sudo apt-get install -y libcurl4-openssl-dev
 
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
-
       - name: Run Tests
         uses: gradle/gradle-build-action@v2
         with:
           arguments: check
 
-    Explore-GitHub-Actions:
-      runs-on: ubuntu-latest
-      steps:
-        - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-        - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-        - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-        - name: Check out repository code
-          uses: actions/checkout@v3
-        - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-        - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-        - name: List files in the repository
-          run: |
-            ls ${{ github.workspace }}
-        - run: echo "🍏 This job's status is ${{ job.status }}."
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
 
-      #      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      #      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      #      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      #      - name: Check out repository code
-      #        uses: actions/checkout@v3
-      #      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      #      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      #      - name: List files in the repository
-      #        run: |
-      #          ls ${{ github.workspace }}
-
-#      - name: GitHub Actions Demo
-#                - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-#                - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-#                - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-#                - name: Check out repository code
-#                  uses: actions/checkout@v3
-#                - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-#                - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-#                - name: List files in the repository
-#                  run: |
-#                    ls ${{ github.workspace }}
-#                - run: echo "🍏 This job's status is ${{ job.status }}."
 #      - name: List Tests
 #        run: ls .;echo "---build";ls build/;echo "---test-results"; ls build/test-results/;echo "---jvmTest"; ls build/test-results/jvmTest/
 #
