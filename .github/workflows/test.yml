@@ -17,7 +17,7 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   build:
-#    runs-on: macos-latest
+    #    runs-on: macos-latest
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
@@ -34,6 +34,8 @@ jobs:
 
       - name: Test package
         run: gradle check
+
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
 
 #      - name: Report unit tests
 #        uses: dorny/test-reporter@v1
