@@ -1,12 +1,18 @@
-rootProject.name = "crowdproj-product-properties"
+rootProject.name = "com.crowdproj.marketplace"
 
 pluginManagement {
     plugins {
         val kotlinVersion: String by settings
+        val openapiVersion: String by settings
         kotlin("jvm") version kotlinVersion
-        id("io.kotest")
+        kotlin("multiplatform") version kotlinVersion apply false
+        kotlin("plugin.serialization") version kotlinVersion apply false
+
+        id("org.openapi.generator") version openapiVersion apply false
     }
 
 }
 
-include("m2l3-testing")
+include("product-properties-api-v1")
+include("product-properties-common")
+include("product-properties-mappers-v1")
