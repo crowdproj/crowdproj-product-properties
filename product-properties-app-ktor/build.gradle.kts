@@ -1,3 +1,6 @@
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
 import org.jetbrains.kotlin.util.suffixIfNot
 
 val ktorVersion: String by project
@@ -8,8 +11,14 @@ fun ktor(module: String, prefix: String = "server-", version: String? = this@Bui
 
 plugins {
     id("application")
+    id("com.bmuschko.docker-java-application")
+    id("com.bmuschko.docker-remote-api")
     kotlin("plugin.serialization")
     kotlin("multiplatform")
+}
+
+repositories {
+    maven { url = uri("https://maven.pkg.jetbrains.space/public/p/ktor/eap") }
 }
 
 application {
@@ -50,6 +59,27 @@ kotlin {
                 implementation(ktor("test-host")) // "io.ktor:ktor-server-test-host:$ktorVersion"
                 implementation(ktor("content-negotiation", prefix = "client-"))
             }
+        }
+    }
+    tasks {
+        val linkReleaseExecutableNative by getting(KotlinNativeLink::class)
+
+        val dockerDockerfile by creating(Dockerfile::class) {
+            group = "docker"
+            from("ubuntu:22.02")
+            doFirst {
+                copy {
+                    from(linkReleaseExecutableNative.binary.outputFile)
+                    into("${this@creating.temporaryDir}/app")
+                }
+            }
+            copyFile("app", "/app")
+            entryPoint("/app")
+        }
+        create("dockerBuildNativeImage", DockerBuildImage::class) {
+            group = "docker"
+            dependsOn(dockerDockerfile)
+            images.add("${project.name}:${project.version}")
         }
     }
 }
