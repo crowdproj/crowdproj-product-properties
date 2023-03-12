@@ -16,3 +16,5 @@ pluginManagement {
 include("product-properties-api-v1")
 include("product-properties-common")
 include("product-properties-mappers-v1")
+include("product-properties-app-ktor")
+include("product-properties-stubs")
