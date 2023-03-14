@@ -1,10 +1,8 @@
-import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
-import com.bmuschko.gradle.docker.tasks.image.Dockerfile
-import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
 import org.jetbrains.kotlin.util.suffixIfNot
 
 val ktorVersion: String by project
 val serializationVersion: String by project
+val logbackVersion: String by project
 
 fun ktor(module: String, prefix: String = "server-", version: String? = this@Build_gradle.ktorVersion): Any =
     "io.ktor:ktor-${prefix.suffixIfNot("-")}$module:$version"
@@ -22,24 +20,22 @@ repositories {
 }
 
 application {
-    mainClass.set("com.crowdproj.marketplace.app.ApplicationKt")
+    mainClass.set("io.ktor.server.cio.EngineMain")
 }
 
 kotlin {
-    val nativeTarget = when (System.getProperty("os.name")) {
-        "Mac OS X" -> macosX64("native")
-        "Linux" -> linuxX64("native")
-        else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
-    }
-    nativeTarget.apply {
-        binaries {
-            executable {
-                entryPoint = "com.crowdproj.marketplace.app.main"
+    jvm {}
+    linuxX64 {}
+        .apply {
+            binaries {
+                executable {
+                    entryPoint = "com.crowdproj.marketplace.app.main"
+                }
             }
         }
-    }
+
     sourceSets {
-        val nativeMain by getting {
+        val commonMain by getting {
             dependencies {
                 implementation(project(":product-properties-api-v1"))
                 implementation(project(":product-properties-common"))
@@ -48,38 +44,45 @@ kotlin {
 
                 implementation(ktor("core")) // "io.ktor:ktor-server-core:$ktorVersion"
                 implementation(ktor("cio"))
+                implementation(ktor("config-yaml"))
 
                 implementation(ktor("content-negotiation"))
                 implementation(ktor("kotlinx-json", prefix = "serialization-"))
             }
         }
-        val nativeTest by getting {
+        val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(ktor("test-host")) // "io.ktor:ktor-server-test-host:$ktorVersion"
                 implementation(ktor("content-negotiation", prefix = "client-"))
             }
         }
-    }
-    tasks {
-        val linkReleaseExecutableNative by getting(KotlinNativeLink::class)
-
-        val dockerDockerfile by creating(Dockerfile::class) {
-            group = "docker"
-            from("ubuntu:22.02")
-            doFirst {
-                copy {
-                    from(linkReleaseExecutableNative.binary.outputFile)
-                    into("${this@creating.temporaryDir}/app")
-                }
+        val jvmMain by getting {
+            dependencies {
+                implementation(ktor("call-logging"))
+                implementation("ch.qos.logback:logback-classic:$logbackVersion")
             }
-            copyFile("app", "/app")
-            entryPoint("/app")
-        }
-        create("dockerBuildNativeImage", DockerBuildImage::class) {
-            group = "docker"
-            dependsOn(dockerDockerfile)
-            images.add("${project.name}:${project.version}")
         }
     }
+//    tasks {
+//        val linkReleaseExecutableNative by getting(KotlinNativeLink::class)
+//
+//        val dockerDockerfile by creating(Dockerfile::class) {
+//            group = "docker"
+//            from("ubuntu:22.02")
+//            doFirst {
+//                copy {
+//                    from(linkReleaseExecutableNative.binary.outputFile)
+//                    into("${this@creating.temporaryDir}/app")
+//                }
+//            }
+//            copyFile("app", "/app")
+//            entryPoint("/app")
+//        }
+//        create("dockerBuildNativeImage", DockerBuildImage::class) {
+//            group = "docker"
+//            dependsOn(dockerDockerfile)
+//            images.add("${project.name}:${project.version}")
+//        }
+//    }
 }

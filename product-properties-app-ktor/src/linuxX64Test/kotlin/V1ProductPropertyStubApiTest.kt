@@ -1,15 +1,12 @@
 import com.crowdproj.marketplace.api.v1.apiV1Mapper
 import com.crowdproj.marketplace.api.v1.models.*
 import com.crowdproj.marketplace.app.module
-import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.testing.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -19,7 +16,6 @@ class V1ProductPropertyStubApiTest {
         application {
             module()
         }
-        val client = myClient()
         val response = client.post("/v1/product/property/create") {
             val requestObj = ProductPropertyCreateRequest(
                 requestId = "12345",
@@ -52,7 +48,6 @@ class V1ProductPropertyStubApiTest {
         application {
             module()
         }
-        val client = myClient()
         val response = client.post("/v1/product/properties/read") {
             val requestObj = ProductPropertyReadRequest(
                 requestId = "12345",
@@ -79,7 +74,6 @@ class V1ProductPropertyStubApiTest {
         application {
             module()
         }
-        val client = myClient()
         val response = client.post("/v1/product/property/update") {
             val requestObj = ProductPropertyUpdateRequest(
                 requestId = "12345",
@@ -113,7 +107,6 @@ class V1ProductPropertyStubApiTest {
         application {
             module()
         }
-        val client = myClient()
         val response = client.post("/v1/product/property/delete") {
             val requestObj = ProductPropertyDeleteRequest(
                 requestId = "12345",
@@ -140,7 +133,6 @@ class V1ProductPropertyStubApiTest {
         application {
             module()
         }
-        val client = myClient()
         val response = client.post("/v1/product/property/search") {
             val requestObj = ProductPropertySearchRequest(
                 requestId = "12345",
@@ -162,15 +154,5 @@ class V1ProductPropertyStubApiTest {
         assertEquals(3, responseObj.productProperties?.size)
         assertEquals("3", responseObj.productProperties?.last()?.id)
         assertEquals("Height", responseObj.productProperties?.last()?.name)
-    }
-
-    private fun ApplicationTestBuilder.myClient() = createClient {
-        install(ContentNegotiation) {
-            json(Json {
-                isLenient = true
-                prettyPrint = true
-                ignoreUnknownKeys = true
-            })
-        }
     }
 }
