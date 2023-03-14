@@ -1,6 +1,8 @@
 package com.crowdproj.marketplace.app
 
+import io.ktor.server.application.*
 import io.ktor.server.cio.*
+import io.ktor.server.config.yaml.*
 import io.ktor.server.engine.*
 
 fun main() {
@@ -8,12 +10,14 @@ fun main() {
         module {
             module()
         }
+        val appConfig = YamlConfig("src/commonMain/resources/application.yaml")
+        if (appConfig != null) {
+            config = appConfig
+        }
         connector {
-            port = 8080
+            port = appConfig?.port ?: 8080
             host = "0.0.0.0"
         }
     })
         .start(wait = true)
 }
-
-//fun main(args: Array<String>): Unit = io.ktor.server.cio.EngineMain.main(args)

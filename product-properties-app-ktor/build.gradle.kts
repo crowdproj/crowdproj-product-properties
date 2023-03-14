@@ -1,3 +1,5 @@
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 import org.jetbrains.kotlin.util.suffixIfNot
 
 val ktorVersion: String by project
@@ -64,25 +66,23 @@ kotlin {
             }
         }
     }
-//    tasks {
-//        val linkReleaseExecutableNative by getting(KotlinNativeLink::class)
-//
-//        val dockerDockerfile by creating(Dockerfile::class) {
-//            group = "docker"
-//            from("ubuntu:22.02")
-//            doFirst {
-//                copy {
-//                    from(linkReleaseExecutableNative.binary.outputFile)
-//                    into("${this@creating.temporaryDir}/app")
-//                }
-//            }
-//            copyFile("app", "/app")
-//            entryPoint("/app")
-//        }
-//        create("dockerBuildNativeImage", DockerBuildImage::class) {
-//            group = "docker"
-//            dependsOn(dockerDockerfile)
-//            images.add("${project.name}:${project.version}")
-//        }
-//    }
+    tasks {
+        val dockerJvmDockerfile by creating(Dockerfile::class) {
+            group = "docker"
+            from("openjdk:17")
+            copyFile("app.jar", "app.jar")
+            entryPoint("java", "-Xms256m", "-Xmx512m", "-jar", "/app.jar")
+        }
+        create("dockerBuildJvmImage", DockerBuildImage::class) {
+            group = "docker"
+            dependsOn(dockerJvmDockerfile, named("jvmJar"))
+            doFirst {
+                copy {
+                    from(named("jvmJar"))
+                    into("${project.buildDir}/docker/app.jar")
+                }
+            }
+            images.add("${project.name}:${project.version}")
+        }
+    }
 }
