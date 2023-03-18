@@ -1,13 +1,18 @@
 # Описание сущности
 
-1. Item
-    1. title
-    2. imageUrl
-    3. price
-    4. numberOfPlace
-    5. amount
-    6. mass
-    7. typeGroup
-        1. id (1, 2, 3 ... N)
-        2. name (Для дома, для офиса, для дачи ...)
-    8. contract
+## Описание сущности ProductProperty, свойства товара
+
+1. id
+2. name - название
+3. description - описание
+4. units - список Id Единиц измерений
+5. unitMain - id основной ЕИ
+
+## Функции (эндпониты)
+
+1. CRUD (create, read, update, delete) для ProductProperty
+    1. create
+    2. read по id
+    3. read по список id
+    4. update по id
+    5. delete по id.
