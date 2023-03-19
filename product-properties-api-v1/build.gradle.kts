@@ -5,11 +5,12 @@ plugins {
 }
 
 val apiSpec: Configuration by configurations.creating
+val crowdProjBaseApiVersion: String by project
 dependencies {
     apiSpec(
         group = "com.crowdproj",
         name = "specs-v0",
-        version = rootProject.version.toString(),
+        version = crowdProjBaseApiVersion,
         classifier = "openapi",
         ext = "yaml"
     )

@@ -125,50 +125,31 @@ components:
   schemas:
 
     IProductPropertyRequest:
-      type: object
-      description: Base interface for all requests
-      properties:
-        requestType:
-          type: string
-          description: Field for calculation request type
-          example: create
-        requestId:
-          $ref: '#/components/schemas/RequestId'
-      discriminator:
-        propertyName: requestType
-        mapping:
-          create: '#/components/schemas/ProductPropertyCreateRequest'
-          read: '#/components/schemas/ProductPropertyReadRequest'
-          update: '#/components/schemas/ProductPropertyUpdateRequest'
-          delete: '#/components/schemas/ProductPropertyDeleteRequest'
-          search: '#/components/schemas/ProductPropertySearchRequest'
+      allOf:
+        - $ref: './build/base.yaml#/components/schemas/IRequest'
+        - type: object
+          discriminator:
+            propertyName: requestType
+            mapping:
+              create: '#/components/schemas/ProductPropertyCreateRequest'
+              read: '#/components/schemas/ProductPropertyReadRequest'
+              update: '#/components/schemas/ProductPropertyUpdateRequest'
+              delete: '#/components/schemas/ProductPropertyDeleteRequest'
+              search: '#/components/schemas/ProductPropertySearchRequest'
 
     IProductPropertyResponse:
-      type: object
-      description: Basic interface for all responses
-      properties:
-        responseType:
-          type: string
-          description: Field for calculation response type
-          example: create
-        requestId:
-          $ref: '#/components/schemas/RequestId'
-        result:
-          $ref: '#/components/schemas/ResponseResult'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-
-      discriminator:
-        propertyName: responseType
-        mapping:
-          create: '#/components/schemas/ProductPropertyCreateResponse'
-          read: '#/components/schemas/ProductPropertyReadResponse'
-          update: '#/components/schemas/ProductPropertyUpdateResponse'
-          delete: '#/components/schemas/ProductPropertyDeleteResponse'
-          search: '#/components/schemas/ProductPropertySearchResponse'
-          init: '#/components/schemas/ProductPropertyInitResponse'
+      allOf:
+        - $ref: './build/base.yaml#/components/schemas/IResponse'
+        - type: object
+          discriminator:
+            propertyName: responseType
+            mapping:
+              create: '#/components/schemas/ProductPropertyCreateResponse'
+              read: '#/components/schemas/ProductPropertyReadResponse'
+              update: '#/components/schemas/ProductPropertyUpdateResponse'
+              delete: '#/components/schemas/ProductPropertyDeleteResponse'
+              search: '#/components/schemas/ProductPropertySearchResponse'
+              init: '#/components/schemas/ProductPropertyInitResponse'
 
     Error:
       $ref: './build/base.yaml#/components/schemas/Error'
