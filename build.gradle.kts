@@ -4,7 +4,7 @@ plugins {
     kotlin("jvm")
 }
 
-group = "ru.otus.kotlin.testproject"
+group = "com.crowdproj.marketplace"
 version = "1.0-SNAPSHOT"
 
 repositories {
