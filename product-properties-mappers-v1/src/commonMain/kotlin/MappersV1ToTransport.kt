@@ -49,6 +49,12 @@ fun PropContext.toTransportSearch() = ProductPropertySearchResponse(
     productProperties = propertiesResponse.toTransport()
 )
 
+fun PropContext.toTransportInit() = ProductPropertyInitResponse(
+    requestId = this.requestId.asString().takeIf { it.isNotBlank() },
+    result = if (errors.isEmpty()) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    errors = errors.toTransportErrors(),
+)
+
 private fun ProductProperty.toTransport() = ProductPropertyResponseObject(
     id = id.takeIf { it != ProductPropertyId.NONE }?.asString(),
     name = name.takeIf { it.isNotBlank() },
