@@ -19,7 +19,6 @@ import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.isActive
 import kotlinx.serialization.decodeFromString
 
 val sessions = mutableSetOf<WebSocketSession>()
@@ -49,10 +48,9 @@ suspend fun WebSocketSession.wsHandlerV1() {
 
             // If change request, response is sent to everyone
             if (context.isUpdatableCommand()) {
-                sessions.filter { it.isActive }
-                    .forEach {
-                        it.send(Frame.Text(result))
-                    }
+                sessions.forEach {
+                    it.send(Frame.Text(result))
+                }
             } else {
                 outgoing.send(Frame.Text(result))
             }
@@ -65,6 +63,8 @@ suspend fun WebSocketSession.wsHandlerV1() {
             outgoing.send(Frame.Text(result))
         }
     }.collect()
+
+    sessions.remove(this)
 }
 
 private fun PropContext.fillStubResponse(request: IProductPropertyRequest) {
