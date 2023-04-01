@@ -123,7 +123,7 @@ components:
 
     IProductPropertyRequest:
       allOf:
-        - $ref: './base.yaml#/components/schemas/IRequest'
+        - $ref: '../build/base.yaml#/components/schemas/IRequest'
         - type: object
           discriminator:
             propertyName: requestType
@@ -136,7 +136,7 @@ components:
 
     IProductPropertyResponse:
       allOf:
-        - $ref: './base.yaml#/components/schemas/IResponse'
+        - $ref: '../build/base.yaml#/components/schemas/IResponse'
         - type: object
           discriminator:
             propertyName: responseType
@@ -149,19 +149,19 @@ components:
               init: '#/components/schemas/ProductPropertyInitResponse'
 
     Error:
-      $ref: './base.yaml#/components/schemas/Error'
+      $ref: '../build/base.yaml#/components/schemas/Error'
 
     RequestId:
-      $ref: './base.yaml#/components/schemas/RequestId'
+      $ref: '../build/base.yaml#/components/schemas/RequestId'
 
     UserId:
-      $ref: './base.yaml#/components/schemas/UserId'
+      $ref: '../build/base.yaml#/components/schemas/UserId'
 
     ResponseResult:
-      $ref: './base.yaml#/components/schemas/ResponseResult'
+      $ref: '../build/base.yaml#/components/schemas/ResponseResult'
 
     RequestDebug:
-      $ref: './base.yaml#/components/schemas/CpRequestDebug'
+      $ref: '../build/base.yaml#/components/schemas/CpRequestDebug'
 
     UnitId:
       type: string

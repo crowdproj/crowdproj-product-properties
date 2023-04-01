@@ -1,4 +1,3 @@
-import com.crowdproj.marketplace.api.v1.apiV1Mapper
 import com.crowdproj.marketplace.api.v1.models.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -7,7 +6,7 @@ import kotlin.test.assertContains
 import kotlin.test.assertEquals
 
 class RequestSerializationTest {
-    private val request: IProductPropertyRequest = ProductPropertyCreateRequest(
+    private val request = ProductPropertyCreateRequest(
         requestType = "create",
         requestId = "123",
         debug = CpBaseDebug(

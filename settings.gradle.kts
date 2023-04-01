@@ -14,7 +14,6 @@ pluginManagement {
     }
 }
 
-include("app")
 include("product-properties-api-v1")
 include("product-properties-common")
 include("product-properties-mappers-v1")

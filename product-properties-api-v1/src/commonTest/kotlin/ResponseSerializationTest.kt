@@ -1,5 +1,3 @@
-import com.crowdproj.marketplace.api.v1.apiV1Mapper
-import com.crowdproj.marketplace.api.v1.models.IProductPropertyResponse
 import com.crowdproj.marketplace.api.v1.models.ProductPropertyCreateResponse
 import com.crowdproj.marketplace.api.v1.models.ProductPropertyResponseObject
 import com.crowdproj.marketplace.api.v1.models.ResponseResult
@@ -10,7 +8,7 @@ import kotlin.test.assertContains
 import kotlin.test.assertEquals
 
 class ResponseSerializationTest {
-    private val response: IProductPropertyResponse = ProductPropertyCreateResponse(
+    private val response = ProductPropertyCreateResponse(
         responseType = "create",
         requestId = "123",
         result = ResponseResult.SUCCESS,
