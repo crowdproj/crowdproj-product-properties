@@ -14,7 +14,7 @@ val ProductPropertyResponseSerializer = ResponseSerializer(ProductPropertyRespon
 
 private object ProductPropertyResponseSerializerBase :
     JsonContentPolymorphicSerializer<IProductPropertyResponse>(IProductPropertyResponse::class) {
-    private const val discriminator = "requestType"
+    private const val discriminator = "responseType"
 
     override fun selectDeserializer(element: JsonElement): KSerializer<out IProductPropertyResponse> {
 

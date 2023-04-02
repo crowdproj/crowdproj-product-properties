@@ -27,14 +27,13 @@ application {
 
 kotlin {
     jvm {}
-    linuxX64 {}
-        .apply {
-            binaries {
-                executable {
-                    entryPoint = "com.crowdproj.marketplace.app.main"
-                }
+    linuxX64 {
+        binaries {
+            executable {
+                entryPoint = "com.crowdproj.marketplace.app.main"
             }
         }
+    }
 
     sourceSets {
         val commonMain by getting {
@@ -47,6 +46,7 @@ kotlin {
                 implementation(ktor("core")) // "io.ktor:ktor-server-core:$ktorVersion"
                 implementation(ktor("cio"))
                 implementation(ktor("config-yaml"))
+                implementation(ktor("websockets"))
 
                 implementation(ktor("content-negotiation"))
                 implementation(ktor("kotlinx-json", prefix = "serialization-"))
@@ -57,6 +57,7 @@ kotlin {
                 implementation(kotlin("test"))
                 implementation(ktor("test-host")) // "io.ktor:ktor-server-test-host:$ktorVersion"
                 implementation(ktor("content-negotiation", prefix = "client-"))
+                implementation(ktor("websockets", prefix = "client-"))
             }
         }
         val jvmMain by getting {
