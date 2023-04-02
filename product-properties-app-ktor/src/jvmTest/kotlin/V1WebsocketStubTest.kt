@@ -128,7 +128,7 @@ class V1WebsocketStubTest {
             install(WebSockets)
         }
 
-        client.webSocket("/ws/v1") {
+        client.webSocket("v1/ws") {
             withTimeout(3000) {
                 val incame = incoming.receive() as Frame.Text
                 val response = apiV1Mapper.decodeFromString<T>(incame.readText())

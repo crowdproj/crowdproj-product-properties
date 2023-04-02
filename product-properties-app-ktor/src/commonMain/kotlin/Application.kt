@@ -21,9 +21,10 @@ fun Application.module() {
     routing {
         route("v1") {
             v1ProductProperty()
-        }
-        webSocket("/ws/v1") {
-            wsHandlerV1()
+
+            webSocket("ws") {
+                wsHandlerV1()
+            }
         }
     }
 }
