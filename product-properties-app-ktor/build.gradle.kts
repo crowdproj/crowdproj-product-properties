@@ -1,20 +1,23 @@
-import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
-import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 import org.jetbrains.kotlin.util.suffixIfNot
 
 val ktorVersion: String by project
 val serializationVersion: String by project
 val logbackVersion: String by project
+val jvmTarget: String by project
 
-fun ktor(module: String, prefix: String = "server-", version: String? = this@Build_gradle.ktorVersion): Any =
+fun ktorIo(module: String, prefix: String = "server-", version: String? = this@Build_gradle.ktorVersion): Any =
     "io.ktor:ktor-${prefix.suffixIfNot("-")}$module:$version"
 
 plugins {
     id("application")
-    id("com.bmuschko.docker-java-application")
-    id("com.bmuschko.docker-remote-api")
+    id("io.ktor.plugin")
     kotlin("plugin.serialization")
     kotlin("multiplatform")
+}
+val webjars: Configuration by configurations.creating
+dependencies {
+    val swaggerUiVersion: String by project
+    webjars("org.webjars:swagger-ui:$swaggerUiVersion")
 }
 
 repositories {
@@ -24,6 +27,14 @@ repositories {
 application {
     mainClass.set("io.ktor.server.cio.EngineMain")
 }
+
+//ktor {
+//    docker {
+//        localImageName.set(project.name)
+//        imageTag.set(project.version.toString())
+//        jreVersion.set(JreVersion.valueOf("JRE_$jvmTarget"))
+//    }
+//}
 
 kotlin {
     jvm {}
@@ -42,48 +53,66 @@ kotlin {
                 implementation(project(":product-properties-common"))
                 implementation(project(":product-properties-mappers-v1"))
                 implementation(project(":product-properties-stubs"))
+                implementation(project(":product-properties-lib-logging-kermit"))
+                implementation(project(":product-properties-api-log"))
+                implementation(project(":product-properties-mappers-log"))
 
-                implementation(ktor("core")) // "io.ktor:ktor-server-core:$ktorVersion"
-                implementation(ktor("cio"))
-                implementation(ktor("config-yaml"))
-                implementation(ktor("websockets"))
+                implementation(ktorIo("core")) // "io.ktor:ktor-server-core:$ktorVersion"
+                implementation(ktorIo("cio"))
+                implementation(ktorIo("config-yaml"))
+                implementation(ktorIo("websockets"))
 
-                implementation(ktor("content-negotiation"))
-                implementation(ktor("kotlinx-json", prefix = "serialization-"))
+                implementation(ktorIo("content-negotiation"))
+                implementation(ktorIo("kotlinx-json", prefix = "serialization-"))
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
-                implementation(ktor("test-host")) // "io.ktor:ktor-server-test-host:$ktorVersion"
-                implementation(ktor("content-negotiation", prefix = "client-"))
-                implementation(ktor("websockets", prefix = "client-"))
+                implementation(ktorIo("test-host")) // "io.ktor:ktor-server-test-host:$ktorVersion"
+                implementation(ktorIo("content-negotiation", prefix = "client-"))
+                implementation(ktorIo("websockets", prefix = "client-"))
             }
         }
         val jvmMain by getting {
             dependencies {
-                implementation(ktor("call-logging"))
+                implementation(ktorIo("call-logging"))
                 implementation("ch.qos.logback:logback-classic:$logbackVersion")
+                implementation(project(":product-properties-lib-logging-logback"))
             }
         }
     }
     tasks {
-        val dockerJvmDockerfile by creating(Dockerfile::class) {
-            group = "docker"
-            from("openjdk:17")
-            copyFile("app.jar", "app.jar")
-            entryPoint("java", "-Xms256m", "-Xmx512m", "-jar", "/app.jar")
-        }
-        create("dockerBuildJvmImage", DockerBuildImage::class) {
-            group = "docker"
-            dependsOn(dockerJvmDockerfile, named("jvmJar"))
-            doFirst {
+        @Suppress("UnstableApiUsage")
+        withType<ProcessResources>().configureEach {
+//            println("RESOURCES: ${this.name} ${this::class}")
+//            from("$rootDir/specs") {
+//                into("specs")
+//                filter {
+//                    // Устанавливаем версию в сваггере
+//                    it.replace("\${VERSION_APP}", project.version.toString())
+//                }
+//            }
+            webjars.forEach { jar ->
+                val conf = webjars.resolvedConfiguration
+                println("JarAbsPa: ${jar.absolutePath}")
+                val artifact = conf.resolvedArtifacts.find { it.file.toString() == jar.absolutePath } ?: return@forEach
+                val upStreamVersion = artifact.moduleVersion.id.version.replace("(-[\\d.-]+)", "")
                 copy {
-                    from(named("jvmJar"))
-                    into("${project.buildDir}/docker/app.jar")
+                    from(zipTree(jar))
+                    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+                    into(file("${buildDir}/webjars-content/${artifact.name}"))
+                }
+                with(this@configureEach) {
+                    this.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+                    from(
+                        "${buildDir}/webjars-content/${artifact.name}/META-INF/resources/webjars/${artifact.name}/${upStreamVersion}"
+                    ) { into(artifact.name) }
+                    from(
+                        "${buildDir}/webjars-content/${artifact.name}/META-INF/resources/webjars/${artifact.name}/${artifact.moduleVersion.id.version}"
+                    ) { into(artifact.name) }
                 }
             }
-            images.add("${project.name}:${project.version}")
         }
     }
 }

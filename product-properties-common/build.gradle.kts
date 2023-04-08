@@ -18,6 +18,8 @@ kotlin {
                 implementation(kotlin("stdlib-common"))
 
                 api("org.jetbrains.kotlinx:kotlinx-datetime:$datetimeVersion")
+
+                api(project(":product-properties-lib-logging-common"))
             }
         }
     }
