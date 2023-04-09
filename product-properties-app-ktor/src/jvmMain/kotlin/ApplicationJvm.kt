@@ -1,6 +1,7 @@
 package com.crowdproj.marketplace.app
 
 import com.crowdproj.marketplace.app.plugins.initAppSettings
+import com.crowdproj.marketplace.app.plugins.swagger
 import com.crowdproj.marketplace.logging.jvm.PropLogWrapperLogback
 import io.ktor.server.application.*
 import io.ktor.server.cio.*
@@ -26,5 +27,9 @@ fun Application.moduleJvm(appSettings: PropAppSettings = initAppSettings()) {
             .loggerProvider
             .logger(clazz) as? PropLogWrapperLogback
         lgr?.logger?.also { logger = it }
+    }
+
+    routing {
+        swagger(appSettings)
     }
 }

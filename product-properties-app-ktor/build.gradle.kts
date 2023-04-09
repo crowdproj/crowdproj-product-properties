@@ -28,13 +28,13 @@ application {
     mainClass.set("io.ktor.server.cio.EngineMain")
 }
 
-//ktor {
-//    docker {
-//        localImageName.set(project.name)
-//        imageTag.set(project.version.toString())
-//        jreVersion.set(JreVersion.valueOf("JRE_$jvmTarget"))
-//    }
-//}
+ktor {
+    docker {
+        localImageName.set(project.name)
+        imageTag.set(project.version.toString())
+        jreVersion.set(io.ktor.plugin.features.JreVersion.valueOf("JRE_$jvmTarget"))
+    }
+}
 
 kotlin {
     jvm {}
@@ -63,6 +63,9 @@ kotlin {
                 implementation(ktorIo("websockets"))
 
                 implementation(ktorIo("content-negotiation"))
+                implementation(ktorIo("cors"))
+                implementation(ktorIo("caching-headers"))
+                implementation(ktorIo("auto-head-response"))
                 implementation(ktorIo("kotlinx-json", prefix = "serialization-"))
             }
         }
@@ -85,14 +88,17 @@ kotlin {
     tasks {
         @Suppress("UnstableApiUsage")
         withType<ProcessResources>().configureEach {
-//            println("RESOURCES: ${this.name} ${this::class}")
-//            from("$rootDir/specs") {
-//                into("specs")
-//                filter {
-//                    // Устанавливаем версию в сваггере
-//                    it.replace("\${VERSION_APP}", project.version.toString())
-//                }
-//            }
+            println("RESOURCES: ${this.name} ${this::class}")
+            from("$rootDir/product-properties-api-v1/spec-product-properties-v1.yaml") {
+                into("specs")
+                filter {
+                    // Устанавливаем версию в сваггере
+                    it.replace("\${VERSION_APP}", project.version.toString())
+                }
+            }
+            from("$rootDir/product-properties-api-v1/build/base.yaml") {
+                into("specs")
+            }
             webjars.forEach { jar ->
                 val conf = webjars.resolvedConfiguration
                 println("JarAbsPa: ${jar.absolutePath}")
