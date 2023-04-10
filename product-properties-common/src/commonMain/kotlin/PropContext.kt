@@ -20,5 +20,5 @@ data class PropContext(
     val propertiesFilterRequest: ProductPropertyFilter = ProductPropertyFilter(),
 
     val propertyResponse: ProductProperty = ProductProperty(),
-    val propertiesResponse: MutableList<ProductProperty> = mutableListOf(),
+    val propertiesResponse: List<ProductProperty> = emptyList(),
 )

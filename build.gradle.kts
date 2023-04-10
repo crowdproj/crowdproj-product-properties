@@ -7,18 +7,19 @@ plugins {
 group = "com.crowdproj.marketplace"
 version = "1.0-SNAPSHOT"
 
-repositories {
-    mavenCentral()
+allprojects {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
 }
 
 subprojects {
     group = rootProject.group
     version = rootProject.version
-    repositories {
-        mavenCentral()
-    }
 
     tasks.withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "11"
+        val jvmTarget: String by project
+        kotlinOptions.jvmTarget = jvmTarget
     }
 }
