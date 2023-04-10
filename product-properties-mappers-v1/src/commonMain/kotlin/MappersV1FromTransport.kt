@@ -41,7 +41,7 @@ fun PropContext.fromTransport(request: ProductPropertyUpdateRequest) = this.copy
     stubCase = request.debug.transportToStubCase()
 )
 
-fun PropContext.fromTransport(request: ProductPropertyDeleteRequest) = this.copy(
+fun PropContext. fromTransport(request: ProductPropertyDeleteRequest) = this.copy(
     command = PropCommand.DELETE,
     requestId = request.requestId(),
     propertyRequest = request.productPropertyId.toProductPropertyWithId(),
