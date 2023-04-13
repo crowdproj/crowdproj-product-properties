@@ -5,24 +5,26 @@ import io.ktor.server.application.*
 import io.ktor.server.routing.*
 
 fun Route.v1ProductProperty(appSettings: PropAppSettings) {
+    val loggerProductProperty = appSettings.corSettings.loggerProvider.logger(Route::v1ProductProperty)
+
     route("product") {
         route("property") {
             post("create") {
-                call.createProductProperty(appSettings)
+                call.createProductProperty(appSettings, loggerProductProperty)
             }
             post("update") {
-                call.updateProductProperty(appSettings)
+                call.updateProductProperty(appSettings, loggerProductProperty)
             }
             post("delete") {
-                call.deleteProductProperty(appSettings)
+                call.deleteProductProperty(appSettings, loggerProductProperty)
             }
             post("search") {
-                call.searchProductProperty(appSettings)
+                call.searchProductProperty(appSettings, loggerProductProperty)
             }
         }
         route("properties") {
             post("read") {
-                call.readProductProperties(appSettings)
+                call.readProductProperties(appSettings, loggerProductProperty)
             }
         }
     }

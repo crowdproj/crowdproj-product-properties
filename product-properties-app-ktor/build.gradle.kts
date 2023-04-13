@@ -56,6 +56,7 @@ kotlin {
                 implementation(project(":product-properties-lib-logging-kermit"))
                 implementation(project(":product-properties-api-log"))
                 implementation(project(":product-properties-mappers-log"))
+                implementation(project(":product-properties-biz"))
 
                 implementation(ktorIo("core")) // "io.ktor:ktor-server-core:$ktorVersion"
                 implementation(ktorIo("cio"))
