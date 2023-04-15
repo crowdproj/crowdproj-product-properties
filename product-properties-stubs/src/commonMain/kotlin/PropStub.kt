@@ -32,4 +32,6 @@ object PropStub {
     fun getDeleted() = height.copy(deleted = true)
 
     fun getList() = listOf(length, weight, height).toMutableList()
+
+    fun prepareResult(block: ProductProperty.() -> Unit): ProductProperty = get().apply(block)
 }

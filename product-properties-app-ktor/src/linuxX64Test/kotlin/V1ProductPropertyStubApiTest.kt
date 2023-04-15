@@ -38,8 +38,8 @@ class V1ProductPropertyStubApiTest {
         val responseObj = apiV1Mapper.decodeFromString<ProductPropertyCreateResponse>(responseJson)
         assertEquals(200, response.status.value)
         assertEquals("1", responseObj.productProperty?.id)
-        assertEquals("Length", responseObj.productProperty?.name)
-        assertEquals("Length description", responseObj.productProperty?.description)
+        assertEquals("LENGTH", responseObj.productProperty?.name)
+        assertEquals("length desc", responseObj.productProperty?.description)
         assertEquals("100", responseObj.productProperty?.unitMain)
     }
 
@@ -96,8 +96,8 @@ class V1ProductPropertyStubApiTest {
         val responseObj = apiV1Mapper.decodeFromString<ProductPropertyUpdateResponse>(responseJson)
         assertEquals(200, response.status.value)
         assertEquals("1", responseObj.productProperty?.id)
-        assertEquals("Length", responseObj.productProperty?.name)
-        assertEquals("Length description", responseObj.productProperty?.description)
+        assertEquals("LENGTH", responseObj.productProperty?.name)
+        assertEquals("length desc", responseObj.productProperty?.description)
         assertEquals("100", responseObj.productProperty?.unitMain)
         assertEquals(false, responseObj.productProperty?.deleted)
     }

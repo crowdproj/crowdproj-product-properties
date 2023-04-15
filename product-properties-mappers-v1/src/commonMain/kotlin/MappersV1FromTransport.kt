@@ -32,7 +32,7 @@ fun PropContext.fromTransport(request: ProductPropertyReadRequest) {
 }
 
 fun PropContext.fromTransport(request: ProductPropertyUpdateRequest) {
-    command = PropCommand.DELETE
+    command = PropCommand.UPDATE
     requestId = request.requestId()
     propertyRequest = request.productProperty?.toInternal() ?: ProductProperty()
     workMode = request.debug.transportToWorkMode()

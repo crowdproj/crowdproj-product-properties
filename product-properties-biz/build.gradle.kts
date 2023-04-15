@@ -8,6 +8,7 @@ kotlin {
 
     sourceSets {
         val coroutinesVersion: String by project
+        val kotlinCorVersion: String by project
 
         all { languageSettings.optIn("kotlin.RequiresOptIn") }
 
@@ -18,7 +19,7 @@ kotlin {
 
                 implementation(project(":product-properties-common"))
                 implementation(project(":product-properties-stubs"))
-                //implementation(project(":product-properties-lib-cor"))
+                implementation("com.crowdproj:kotlin-cor:$kotlinCorVersion")
             }
         }
 
