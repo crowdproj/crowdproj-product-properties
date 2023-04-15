@@ -1,2 +1,19 @@
-# crowdproj-properties
-Microservice for management and provisioning of the physical properties of a good, article, cargo, item
+# Product properties
+
+Микросервис с описанием различных свойств товаров, грузов,
+изделий и пр.
+
+## Визуальная схема фронтенда
+
+![Макет фронта](imgs/maket.png)
+
+## Документация
+
+1. MVP
+    1. [Целевай аудитория и портреты клиентов](./docs/01-target_audience_and_clients.md)
+    2. [Заинтересанты](./docs/02-stakeholders.md)
+    3. [Функции](./docs/03-functions.md)
+    4. [Описание сущности](./docs/04-item-desc.md)
+2. Архитектура
+    1. [Компонентная схема](./docs/05-arch.md)
+
