@@ -1,13 +1,9 @@
 package com.crowdproj.marketplace.app.controller
 
-import PropStub
 import com.crowdproj.marketplace.api.logs.mapper.toLog
 import com.crowdproj.marketplace.api.v1.apiV1Mapper
 import com.crowdproj.marketplace.api.v1.encodeResponse
 import com.crowdproj.marketplace.api.v1.models.IProductPropertyRequest
-import com.crowdproj.marketplace.api.v1.models.ProductPropertyDeleteRequest
-import com.crowdproj.marketplace.api.v1.models.ProductPropertyReadRequest
-import com.crowdproj.marketplace.api.v1.models.ProductPropertySearchRequest
 import com.crowdproj.marketplace.app.PropAppSettings
 import com.crowdproj.marketplace.common.PropContext
 import com.crowdproj.marketplace.common.helpers.addError
@@ -56,7 +52,7 @@ suspend fun WebSocketSession.wsHandlerV1(appSettings: PropAppSettings) {
                     data = context.toLog("${logId}-request"),
                 )
 
-                context.fillStubResponse(request)
+                appSettings.processor.exec(context)
 
                 val result = apiV1Mapper.encodeResponse(context.toTransportProductProperty())
 
@@ -85,12 +81,4 @@ suspend fun WebSocketSession.wsHandlerV1(appSettings: PropAppSettings) {
     }.collect()
 
     sessions.remove(this)
-}
-
-private fun PropContext.fillStubResponse(request: IProductPropertyRequest) {
-    when (request) {
-        is ProductPropertySearchRequest, is ProductPropertyReadRequest -> this.propertiesResponse = PropStub.getList()
-        is ProductPropertyDeleteRequest -> this.propertyResponse = PropStub.getDeleted()
-        else -> this.propertyResponse = PropStub.get()
-    }
 }

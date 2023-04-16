@@ -33,5 +33,5 @@ object PropStub {
 
     fun getList() = listOf(length, weight, height).toMutableList()
 
-    fun prepareResult(block: ProductProperty.() -> Unit): ProductProperty = get().apply(block)
+    fun prepareResult(block: ProductProperty.() -> Unit): ProductProperty = get().copy().apply(block)
 }
