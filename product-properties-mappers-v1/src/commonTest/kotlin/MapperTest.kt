@@ -1,5 +1,5 @@
 import com.crowdproj.marketplace.api.v1.models.*
-import com.crowdproj.marketplace.common.PropContext
+import com.crowdproj.marketplace.common.CwpProdPropContext
 import com.crowdproj.marketplace.common.models.*
 import com.crowdproj.marketplace.common.stubs.PropStubs
 import com.crowdproj.marketplace.mappers.v1.fromTransport
@@ -25,7 +25,7 @@ class MapperTest {
             ),
         )
 
-        val context = PropContext().fromTransport(req)
+        val context = CwpProdPropContext().fromTransport(req)
 
         assertEquals(PropStubs.SUCCESS, context.stubCase)
         assertEquals(PropWorkMode.STUB, context.workMode)
@@ -42,7 +42,7 @@ class MapperTest {
 
     @Test
     fun toTransport() {
-        val context = PropContext(
+        val context = CwpProdPropContext(
             requestId = PropRequestId("1234"),
             command = PropCommand.CREATE,
             propertyResponse = ProductProperty(

@@ -4,7 +4,7 @@ import com.crowdproj.marketplace.common.models.*
 import com.crowdproj.marketplace.common.stubs.PropStubs
 import kotlinx.datetime.Instant
 
-data class PropContext(
+data class CwpProdPropContext(
     val command: PropCommand = PropCommand.NONE,
     val state: PropState = PropState.NONE,
     val errors: List<PropError> = emptyList(),

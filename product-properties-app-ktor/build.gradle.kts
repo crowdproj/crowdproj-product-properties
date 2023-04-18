@@ -29,14 +29,13 @@ application {
 
 kotlin {
     jvm {}
-    linuxX64 {}
-        .apply {
-            binaries {
-                executable {
-                    entryPoint = "com.crowdproj.marketplace.app.main"
-                }
+    linuxX64 {
+        binaries {
+            executable {
+                entryPoint = "com.crowdproj.marketplace.app.main"
             }
         }
+    }
 
     sourceSets {
         val commonMain by getting {
