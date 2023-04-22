@@ -1,0 +1,108 @@
+openapi: 3.0.4
+info:
+  title: Product properties log models
+  description: Log models for logging services of product properties
+  contact:
+    name: Sergey Okatov
+    email: sokatov@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+paths: { }
+
+components:
+  schemas:
+    CommonLogModel:
+      title: Common log model
+      description: Common log model for all microservices
+      type: object
+      properties:
+        messageTime:
+          type: string
+        logId:
+          type: string
+        source:
+          type: string
+        product-property:
+          $ref: '#/components/schemas/PropLogModel'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorLogModel'
+
+    PropLogModel:
+      title: log model for microservice product-properties
+      type: object
+      properties:
+        requestId:
+          type: string
+        operation:
+          type: string
+          enum:
+            - create
+            - read
+            - update
+            - delete
+            - search
+        requestProductProp:
+          $ref: '#/components/schemas/ProductPropLog'
+        requestProductProps:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductPropLog'
+        requestFilter:
+          $ref: '#/components/schemas/ProductPropFilterLog'
+        responseProductProp:
+          $ref: '#/components/schemas/ProductPropLog'
+        responseProductProps:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductPropLog'
+
+    ErrorLogModel:
+      title: log model for error
+      type: object
+      properties:
+        message:
+          type: string
+        field:
+          type: string
+        code:
+          type: string
+        level:
+          type: string
+
+    UnitId:
+      type: string
+      description: Unit ID
+
+    ProductPropLog:
+      title: log model for product property
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        unitMain:
+          $ref: '#/components/schemas/UnitId'
+        units:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnitId'
+        deleted:
+          type: boolean
+
+    ProductPropFilterLog:
+      description: filters for Product properties search
+      properties:
+        name:
+          type: string
+          description: Product property name
+        description:
+          type: string
+          description: Product property description
+

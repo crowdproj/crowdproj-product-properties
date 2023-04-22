@@ -1,12 +1,10 @@
 package com.crowdproj.marketplace.app.controller
 
-import PropStub
+import com.crowdproj.marketplace.api.logs.mapper.toLog
 import com.crowdproj.marketplace.api.v1.apiV1Mapper
 import com.crowdproj.marketplace.api.v1.encodeResponse
 import com.crowdproj.marketplace.api.v1.models.IProductPropertyRequest
-import com.crowdproj.marketplace.api.v1.models.ProductPropertyDeleteRequest
-import com.crowdproj.marketplace.api.v1.models.ProductPropertyReadRequest
-import com.crowdproj.marketplace.api.v1.models.ProductPropertySearchRequest
+import com.crowdproj.marketplace.app.PropAppSettings
 import com.crowdproj.marketplace.common.PropContext
 import com.crowdproj.marketplace.common.helpers.addError
 import com.crowdproj.marketplace.common.helpers.asPropError
@@ -23,7 +21,9 @@ import kotlinx.serialization.decodeFromString
 
 val sessions = mutableSetOf<WebSocketSession>()
 
-suspend fun WebSocketSession.wsHandlerV1() {
+private val clazzWS = WebSocketSession::wsHandlerV1::class.qualifiedName ?: "wsHandlerV1_"
+
+suspend fun WebSocketSession.wsHandlerV1(appSettings: PropAppSettings) {
     sessions.add(this)
 
     // Handle init request
@@ -41,18 +41,34 @@ suspend fun WebSocketSession.wsHandlerV1() {
         // Handle without flow destruction
         try {
             val request = apiV1Mapper.decodeFromString<IProductPropertyRequest>(jsonStr)
-            context.fromTransport(request)
-            context.fillStubResponse(request)
 
-            val result = apiV1Mapper.encodeResponse(context.toTransportProductProperty())
+            val logId = clazzWS + request.requestType.toString()
+            val logger = appSettings.corSettings.loggerProvider.logger(logId)
+            logger.doWithLogging(logId) {
+                context.fromTransport(request)
 
-            // If change request, response is sent to everyone
-            if (context.isUpdatableCommand()) {
-                sessions.forEach {
-                    it.send(Frame.Text(result))
+                logger.info(
+                    msg = "${context.command} request is got",
+                    data = context.toLog("${logId}-request"),
+                )
+
+                appSettings.processor.exec(context)
+
+                val result = apiV1Mapper.encodeResponse(context.toTransportProductProperty())
+
+                // If change request, response is sent to everyone
+                if (context.isUpdatableCommand()) {
+                    sessions.forEach {
+                        it.send(Frame.Text(result))
+                    }
+                } else {
+                    outgoing.send(Frame.Text(result))
                 }
-            } else {
-                outgoing.send(Frame.Text(result))
+
+                logger.info(
+                    msg = "${context.command} response is sent",
+                    data = context.toLog("${logId}-response")
+                )
             }
         } catch (_: ClosedReceiveChannelException) {
             sessions.clear()
@@ -65,12 +81,4 @@ suspend fun WebSocketSession.wsHandlerV1() {
     }.collect()
 
     sessions.remove(this)
-}
-
-private fun PropContext.fillStubResponse(request: IProductPropertyRequest) {
-    when (request) {
-        is ProductPropertySearchRequest, is ProductPropertyReadRequest -> this.propertiesResponse = PropStub.getList()
-        is ProductPropertyDeleteRequest -> this.propertyResponse = PropStub.getDeleted()
-        else -> this.propertyResponse = PropStub.get()
-    }
 }

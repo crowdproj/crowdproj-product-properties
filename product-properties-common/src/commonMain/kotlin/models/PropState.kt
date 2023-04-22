@@ -4,4 +4,5 @@ enum class PropState {
     NONE,
     RUNNING,
     FAILING,
+    FINISHING
 }

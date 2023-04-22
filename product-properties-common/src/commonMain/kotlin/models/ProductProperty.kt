@@ -7,4 +7,6 @@ data class ProductProperty(
     var units: List<ProductUnitId> = listOf(),
     var unitMain: ProductUnitId = ProductUnitId.NONE,
     var deleted: Boolean = false,
-)
+) {
+    fun deepCopy(): ProductProperty = this.copy()
+}

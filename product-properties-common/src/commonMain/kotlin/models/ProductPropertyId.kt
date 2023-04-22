@@ -6,6 +6,11 @@ import kotlin.jvm.JvmInline
 value class ProductPropertyId(private val id: String) {
     fun asString() = id
 
+    fun checkFormat(): Boolean {
+        val regExp = Regex("^[0-9a-zA-Z-]+$")
+        return this != NONE && !this.asString().matches(regExp)
+    }
+
     companion object {
         val NONE = ProductPropertyId("")
     }

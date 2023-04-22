@@ -31,8 +31,8 @@ class V1WebsocketStubTest {
         testMethod<ProductPropertyInitResponse, ProductPropertyCreateResponse>(request) { response ->
             assertEquals("12345", response.requestId)
             assertEquals("1", response.productProperty?.id)
-            assertEquals("Length", response.productProperty?.name)
-            assertEquals("Length description", response.productProperty?.description)
+            assertEquals("LENGTH", response.productProperty?.name)
+            assertEquals("length desc", response.productProperty?.description)
             assertEquals("100", response.productProperty?.unitMain)
         }
     }
@@ -75,8 +75,8 @@ class V1WebsocketStubTest {
         testMethod<ProductPropertyInitResponse, ProductPropertyUpdateResponse>(request) { response ->
             assertEquals("12345", response.requestId)
             assertEquals("1", response.productProperty?.id)
-            assertEquals("Length", response.productProperty?.name)
-            assertEquals("Length description", response.productProperty?.description)
+            assertEquals("LENGTH", response.productProperty?.name)
+            assertEquals("length desc", response.productProperty?.description)
             assertEquals("100", response.productProperty?.unitMain)
             assertEquals(false, response.productProperty?.deleted)
         }
