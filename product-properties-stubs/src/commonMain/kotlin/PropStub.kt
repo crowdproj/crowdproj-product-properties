@@ -1,3 +1,5 @@
+package com.crowdproj.marketplace.stubs
+
 import com.crowdproj.marketplace.common.models.ProductProperty
 import com.crowdproj.marketplace.common.models.ProductPropertyId
 import com.crowdproj.marketplace.common.models.ProductUnitId

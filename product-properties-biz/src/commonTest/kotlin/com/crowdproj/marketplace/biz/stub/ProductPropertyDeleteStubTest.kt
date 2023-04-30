@@ -1,10 +1,10 @@
 package com.crowdproj.marketplace.biz.stub
 
-import PropStub
 import com.crowdproj.marketplace.biz.ProductPropertyProcessor
 import com.crowdproj.marketplace.common.PropContext
 import com.crowdproj.marketplace.common.models.*
 import com.crowdproj.marketplace.common.stubs.PropStubs
+import com.crowdproj.marketplace.stubs.PropStub
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
