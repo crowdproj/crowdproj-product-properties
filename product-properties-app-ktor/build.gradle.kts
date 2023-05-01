@@ -57,6 +57,8 @@ kotlin {
                 implementation(project(":product-properties-api-log"))
                 implementation(project(":product-properties-mappers-log"))
                 implementation(project(":product-properties-biz"))
+                implementation(project(":product-properties-repo-in-memory"))
+                implementation(project(":product-properties-repo-stubs"))
 
                 implementation(ktorIo("core")) // "io.ktor:ktor-server-core:$ktorVersion"
                 implementation(ktorIo("cio"))

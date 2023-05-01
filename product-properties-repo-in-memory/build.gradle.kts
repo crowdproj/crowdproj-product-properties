@@ -2,24 +2,28 @@ plugins {
     kotlin("multiplatform")
 }
 
+
+
 kotlin {
     jvm {}
+    macosX64 {}
     linuxX64 {}
 
     sourceSets {
+        val cache4kVersion: String by project
         val coroutinesVersion: String by project
-        val kotlinCorVersion: String by project
-
-        all { languageSettings.optIn("kotlin.RequiresOptIn") }
+        val kmpUUIDVersion: String by project
 
         @Suppress("UNUSED_VARIABLE")
         val commonMain by getting {
             dependencies {
-                implementation(kotlin("stdlib-common"))
-
                 implementation(project(":product-properties-common"))
-                implementation(project(":product-properties-stubs"))
-                implementation("com.crowdproj:kotlin-cor:$kotlinCorVersion")
+
+                implementation("io.github.reactivecircus.cache4k:cache4k:$cache4kVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+                implementation("com.benasher44:uuid:$kmpUUIDVersion")
+                implementation(project(":product-properties-repo-tests"))
+
             }
         }
 
@@ -28,12 +32,6 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
-
-                implementation(project(":product-properties-repo-stubs"))
-                implementation(project(":product-properties-repo-tests"))
-                implementation(project(":product-properties-repo-in-memory"))
-
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
             }
         }
 

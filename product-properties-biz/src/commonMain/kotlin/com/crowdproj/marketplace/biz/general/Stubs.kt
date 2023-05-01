@@ -1,4 +1,4 @@
-package com.crowdproj.marketplace.biz.groups
+package com.crowdproj.marketplace.biz.general
 
 import com.crowdproj.kotlin.cor.handlers.CorChainDsl
 import com.crowdproj.kotlin.cor.handlers.chain

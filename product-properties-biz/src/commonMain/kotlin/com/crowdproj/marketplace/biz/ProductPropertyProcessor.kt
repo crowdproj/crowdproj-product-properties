@@ -1,21 +1,29 @@
 package com.crowdproj.marketplace.biz
 
+import com.crowdproj.kotlin.cor.handlers.chain
 import com.crowdproj.kotlin.cor.handlers.worker
 import com.crowdproj.kotlin.cor.rootChain
-import com.crowdproj.marketplace.biz.groups.operation
-import com.crowdproj.marketplace.biz.groups.stubs
+import com.crowdproj.marketplace.biz.general.initRepo
+import com.crowdproj.marketplace.biz.general.operation
+import com.crowdproj.marketplace.biz.general.prepareResult
+import com.crowdproj.marketplace.biz.general.stubs
+import com.crowdproj.marketplace.biz.repo.*
 import com.crowdproj.marketplace.biz.validation.*
 import com.crowdproj.marketplace.biz.workers.*
 import com.crowdproj.marketplace.common.PropContext
+import com.crowdproj.marketplace.common.PropCorSettings
 import com.crowdproj.marketplace.common.models.ProductPropertyId
 import com.crowdproj.marketplace.common.models.PropCommand
+import com.crowdproj.marketplace.common.models.PropState
 
-class ProductPropertyProcessor {
-    suspend fun exec(context: PropContext) = productPropertyChain.exec(context)
+class ProductPropertyProcessor(private val settings: PropCorSettings = PropCorSettings()) {
+    suspend fun exec(ctx: PropContext) =
+        productPropertyChain.exec(ctx.apply { settings = this@ProductPropertyProcessor.settings })
 
     companion object {
         private val productPropertyChain = rootChain<PropContext> {
             initStatus("Инициализация статуса")
+            initRepo("Инициализация репозитория")
             operation("Создать cвойство продукта", PropCommand.CREATE) {
                 stubs("Обработка стабов") {
                     stubCreateSuccess("Имитация успешного создания")
@@ -35,6 +43,12 @@ class ProductPropertyProcessor {
                     validateDescriptionHasContent("Проверка символов")
                     finishValidation("Завершение проверок")
                 }
+                chain {
+                    title = "Логика сохранения"
+                    repoPrepareCreate("Подготовка объекта для сохранения")
+                    repoCreate("Создание свойства продукта в БД")
+                }
+                prepareResult("Подготовка ответа")
             }
             operation("Получить cвойства продукта", PropCommand.READ) {
                 stubs("Обработка стабов") {
@@ -54,6 +68,16 @@ class ProductPropertyProcessor {
                     validateIdsProperFormat("Проверка формата ids")
                     finishPropsValidation("Завершение проверок")
                 }
+                chain {
+                    title = "Логика чтения"
+                    repoRead("Чтение cвойства продукта из БД")
+                    worker {
+                        title = "Подготовка ответа для Read"
+                        on { state == PropState.RUNNING }
+                        handle { propsRepoDone = propsRepoRead }
+                    }
+                }
+                prepareResult("Подготовка ответа")
             }
             operation("Изменить cвойство продукта", PropCommand.UPDATE) {
                 stubs("Обработка стабов") {
@@ -77,6 +101,13 @@ class ProductPropertyProcessor {
                     validateDescriptionHasContent("Проверка символов")
                     finishValidation("Завершение проверок")
                 }
+                chain {
+                    title = "Логика сохранения"
+                    repoReadOne("Чтение cвойства продукта из БД")
+                    repoPrepareUpdate("Подготовка cвойства продукта для обновления")
+                    repoUpdate("Обновление cвойства продукта в БД")
+                }
+                prepareResult("Подготовка ответа")
             }
             operation("Удалить cвойство продукта", PropCommand.DELETE) {
                 stubs("Обработка стабов") {
@@ -94,6 +125,13 @@ class ProductPropertyProcessor {
                     validateIdProperFormat("Проверка формата id")
                     finishValidation("Успешное завершение процедуры валидации")
                 }
+                chain {
+                    title = "Логика удаления"
+                    repoReadOne("Чтение cвойства продукта из БД")
+                    repoPrepareDelete("Подготовка cвойства продукта для удаления")
+                    repoDelete("Удаление cвойства продукта из БД")
+                }
+                prepareResult("Подготовка ответа")
             }
             operation("Поиск cвойств продукта", PropCommand.SEARCH) {
                 stubs("Обработка стабов") {
@@ -109,6 +147,8 @@ class ProductPropertyProcessor {
 
                     finishPropsFilterValidation("Успешное завершение процедуры валидации")
                 }
+                repoSearch("Поиск свойств продукта в БД по фильтру")
+                prepareResult("Подготовка ответа")
             }
         }.build()
     }

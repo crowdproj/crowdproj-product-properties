@@ -2,10 +2,12 @@ package com.crowdproj.marketplace.biz.validation
 
 import com.crowdproj.marketplace.biz.ProductPropertyProcessor
 import com.crowdproj.marketplace.common.PropContext
+import com.crowdproj.marketplace.common.PropCorSettings
 import com.crowdproj.marketplace.common.models.ProductPropertyFilter
 import com.crowdproj.marketplace.common.models.PropCommand
 import com.crowdproj.marketplace.common.models.PropState
 import com.crowdproj.marketplace.common.models.PropWorkMode
+import com.crowdproj.marketplace.repository.stubs.PropRepoStub
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -16,7 +18,12 @@ import kotlin.test.assertNotEquals
 class BizValidationSearchTest {
 
     private val command = PropCommand.SEARCH
-    private val processor = ProductPropertyProcessor()
+    private val settings by lazy {
+        PropCorSettings(
+            repoTest = PropRepoStub()
+        )
+    }
+    private val processor = ProductPropertyProcessor(settings)
 
     @Test
     fun correctEmpty() = runTest {

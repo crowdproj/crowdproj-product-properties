@@ -1,6 +1,7 @@
 package com.crowdproj.marketplace.common
 
 import com.crowdproj.marketplace.common.models.*
+import com.crowdproj.marketplace.common.repo.IPropRepository
 import com.crowdproj.marketplace.common.stubs.PropStubs
 import kotlinx.datetime.Instant
 
@@ -12,6 +13,14 @@ data class PropContext(
 
     var workMode: PropWorkMode = PropWorkMode.PROD,
     var stubCase: PropStubs = PropStubs.NONE,
+
+    var propRepo: IPropRepository = IPropRepository.NONE,
+    var propRepoRead: ProductProperty = ProductProperty(),
+    var propsRepoRead: MutableList<ProductProperty> = mutableListOf(),
+    var propRepoPrepare: ProductProperty = ProductProperty(),
+    var propsRepoPrepare: MutableList<ProductProperty> = mutableListOf(),
+    var propRepoDone: ProductProperty = ProductProperty(),
+    var propsRepoDone: MutableList<ProductProperty> = mutableListOf(),
 
     var requestId: PropRequestId = PropRequestId.NONE,
     var timeStart: Instant = Instant.NONE,
