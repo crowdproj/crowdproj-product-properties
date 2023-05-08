@@ -1,11 +1,11 @@
 package com.crowdproj.marketplace.mappers.v1
 
 import com.crowdproj.marketplace.api.v1.models.*
-import com.crowdproj.marketplace.common.PropContext
+import com.crowdproj.marketplace.common.CwpProdPropContext
 import com.crowdproj.marketplace.common.models.*
 import com.crowdproj.marketplace.mappers.v1.exceptions.UnknownPropCommand
 
-fun PropContext.toTransportProductProperty(): IProductPropertyResponse = when (val cmd = command) {
+fun CwpProdPropContext.toTransportProductProperty(): IProductPropertyResponse = when (val cmd = command) {
     PropCommand.CREATE -> toTransportCreate()
     PropCommand.READ -> toTransportRead()
     PropCommand.UPDATE -> toTransportUpdate()
@@ -14,35 +14,35 @@ fun PropContext.toTransportProductProperty(): IProductPropertyResponse = when (v
     PropCommand.NONE -> throw UnknownPropCommand(cmd)
 }
 
-fun PropContext.toTransportCreate() = ProductPropertyCreateResponse(
+fun CwpProdPropContext.toTransportCreate() = ProductPropertyCreateResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = if (state == PropState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     productProperty = propertyResponse.toTransport()
 )
 
-fun PropContext.toTransportRead() = ProductPropertyReadResponse(
+fun CwpProdPropContext.toTransportRead() = ProductPropertyReadResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = if (state == PropState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     productProperties = propertiesResponse.toTransport()
 )
 
-fun PropContext.toTransportUpdate() = ProductPropertyUpdateResponse(
+fun CwpProdPropContext.toTransportUpdate() = ProductPropertyUpdateResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = if (state == PropState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     productProperty = propertyResponse.toTransport()
 )
 
-fun PropContext.toTransportDelete() = ProductPropertyDeleteResponse(
+fun CwpProdPropContext.toTransportDelete() = ProductPropertyDeleteResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = if (state == PropState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     productProperty = propertyResponse.toTransport()
 )
 
-fun PropContext.toTransportSearch() = ProductPropertySearchResponse(
+fun CwpProdPropContext.toTransportSearch() = ProductPropertySearchResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = if (state == PropState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),

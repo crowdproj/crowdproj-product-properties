@@ -1,12 +1,12 @@
 package com.crowdproj.marketplace.mappers.v1
 
 import com.crowdproj.marketplace.api.v1.models.*
-import com.crowdproj.marketplace.common.PropContext
+import com.crowdproj.marketplace.common.CwpProdPropContext
 import com.crowdproj.marketplace.common.models.*
 import com.crowdproj.marketplace.common.stubs.PropStubs
 import com.crowdproj.marketplace.mappers.v1.exceptions.UnknownRequestClass
 
-fun PropContext.fromTransport(request: IProductPropertyRequest) = when (request) {
+fun CwpProdPropContext.fromTransport(request: IProductPropertyRequest) = when (request) {
     is ProductPropertyCreateRequest -> fromTransport(request)
     is ProductPropertyReadRequest -> fromTransport(request)
     is ProductPropertyUpdateRequest -> fromTransport(request)
@@ -15,7 +15,7 @@ fun PropContext.fromTransport(request: IProductPropertyRequest) = when (request)
     else -> throw UnknownRequestClass(request::class)
 }
 
-fun PropContext.fromTransport(request: ProductPropertyCreateRequest) = this.copy(
+fun CwpProdPropContext.fromTransport(request: ProductPropertyCreateRequest) = this.copy(
     command = PropCommand.CREATE,
     requestId = request.requestId(),
     propertyRequest = request.productProperty?.toInternal() ?: ProductProperty(),
@@ -24,7 +24,7 @@ fun PropContext.fromTransport(request: ProductPropertyCreateRequest) = this.copy
 )
 
 
-fun PropContext.fromTransport(request: ProductPropertyReadRequest) = this.copy(
+fun CwpProdPropContext.fromTransport(request: ProductPropertyReadRequest) = this.copy(
     command = PropCommand.READ,
     requestId = request.requestId(),
     propertiesRequest = request.productPropertyIds.fromTransport(),
@@ -33,7 +33,7 @@ fun PropContext.fromTransport(request: ProductPropertyReadRequest) = this.copy(
 )
 
 
-fun PropContext.fromTransport(request: ProductPropertyUpdateRequest) = this.copy(
+fun CwpProdPropContext.fromTransport(request: ProductPropertyUpdateRequest) = this.copy(
     command = PropCommand.DELETE,
     requestId = request.requestId(),
     propertyRequest = request.productProperty?.toInternal() ?: ProductProperty(),
@@ -41,7 +41,7 @@ fun PropContext.fromTransport(request: ProductPropertyUpdateRequest) = this.copy
     stubCase = request.debug.transportToStubCase()
 )
 
-fun PropContext.fromTransport(request: ProductPropertyDeleteRequest) = this.copy(
+fun CwpProdPropContext. fromTransport(request: ProductPropertyDeleteRequest) = this.copy(
     command = PropCommand.DELETE,
     requestId = request.requestId(),
     propertyRequest = request.productPropertyId.toProductPropertyWithId(),
@@ -50,7 +50,7 @@ fun PropContext.fromTransport(request: ProductPropertyDeleteRequest) = this.copy
 )
 
 
-fun PropContext.fromTransport(request: ProductPropertySearchRequest) = this.copy(
+fun CwpProdPropContext.fromTransport(request: ProductPropertySearchRequest) = this.copy(
     command = PropCommand.SEARCH,
     requestId = request.requestId(),
     propertiesFilterRequest = request.productPropertyFilter.toInternal(),
