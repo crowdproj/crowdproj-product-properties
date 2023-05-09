@@ -1,6 +1,8 @@
 package com.crowdproj.marketplace.common.helpers
 
 import com.crowdproj.marketplace.common.PropContext
+import com.crowdproj.marketplace.common.exceptions.RepoConcurrencyException
+import com.crowdproj.marketplace.common.models.ProductPropertyLock
 import com.crowdproj.marketplace.common.models.PropError
 import com.crowdproj.marketplace.common.models.PropState
 
@@ -55,4 +57,16 @@ fun errorAdministration(
     group = "administration",
     message = "Microservice management error: $description",
     level = level,
+)
+
+fun errorRepoConcurrency(
+    expectedLock: ProductPropertyLock,
+    actualLock: ProductPropertyLock?,
+    exception: Exception? = null,
+) = PropError(
+    field = "lock",
+    code = "concurrency",
+    group = "repo",
+    message = "The object has been changed concurrently by another user or process",
+    exception = exception ?: RepoConcurrencyException(expectedLock, actualLock),
 )

@@ -23,7 +23,8 @@ class BizRepoDeleteTest {
         unitMain = ProductUnitId("100"),
         units = listOf(
             ProductUnitId("100"), ProductUnitId("200"), ProductUnitId("300")
-        )
+        ),
+        lock = ProductPropertyLock("123-234-abc-ABC"),
     )
     private val repo by lazy {
         PropRepositoryMock(
@@ -54,6 +55,7 @@ class BizRepoDeleteTest {
     fun repoDeleteSuccessTest() = runTest {
         val propToDelete = ProductProperty(
             id = ProductPropertyId("123"),
+            lock = ProductPropertyLock("123-234-abc-ABC"),
         )
         val ctx = PropContext(
             command = command,

@@ -51,7 +51,8 @@ fun repoNotFoundTest(command: PropCommand) = runTest {
             unitMain = ProductUnitId("100"),
             units = listOf(
                 ProductUnitId("100"), ProductUnitId("200"), ProductUnitId("300")
-            )
+            ),
+            lock = ProductPropertyLock("123-234-abc-ABC"),
         )
     )
     processor.exec(ctx)

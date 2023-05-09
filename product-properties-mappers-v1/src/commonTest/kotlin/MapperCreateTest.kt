@@ -7,11 +7,11 @@ import com.crowdproj.marketplace.mappers.v1.toTransportProductProperty
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class MapperTest {
+class MapperCreateTest {
     @Test
     fun fromTransport() {
         val req = ProductPropertyCreateRequest(
-            requestType = "delete",
+            requestType = "create",
             requestId = "1234",
             debug = CpBaseDebug(
                 mode = CpRequestDebugMode.STUB,

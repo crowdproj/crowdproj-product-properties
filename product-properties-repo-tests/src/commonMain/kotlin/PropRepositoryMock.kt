@@ -9,18 +9,18 @@ class PropRepositoryMock(
     private val invokeDeleteProp: (ProductPropertyIdRequest) -> ProductPropertyResponse = { ProductPropertyResponse.MOCK_SUCCESS_EMPTY },
     private val invokeSearchProp: (ProductPropertyFilterRequest) -> ProductPropertiesResponse = { ProductPropertiesResponse.MOCK_SUCCESS_EMPTY },
 ) : IPropRepository {
-    override fun createProductProperty(rq: ProductPropertyRequest): ProductPropertyResponse =
+    override suspend fun createProductProperty(rq: ProductPropertyRequest): ProductPropertyResponse =
         invokeCreateProp(rq)
 
-    override fun readProductProperties(rq: ProductPropertiesIdsRequest): ProductPropertiesResponse =
+    override suspend fun readProductProperties(rq: ProductPropertiesIdsRequest): ProductPropertiesResponse =
         invokeReadProp(rq)
 
-    override fun updateProductProperty(rq: ProductPropertyRequest): ProductPropertyResponse =
+    override suspend fun updateProductProperty(rq: ProductPropertyRequest): ProductPropertyResponse =
         invokeUpdateProp(rq)
 
-    override fun deleteProductProperty(rq: ProductPropertyIdRequest): ProductPropertyResponse =
+    override suspend fun deleteProductProperty(rq: ProductPropertyIdRequest): ProductPropertyResponse =
         invokeDeleteProp(rq)
 
-    override fun searchProductProperty(rq: ProductPropertyFilterRequest): ProductPropertiesResponse =
+    override suspend fun searchProductProperty(rq: ProductPropertyFilterRequest): ProductPropertiesResponse =
         invokeSearchProp(rq)
 }

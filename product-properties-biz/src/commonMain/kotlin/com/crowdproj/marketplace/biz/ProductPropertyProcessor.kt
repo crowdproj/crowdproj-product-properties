@@ -13,6 +13,7 @@ import com.crowdproj.marketplace.biz.workers.*
 import com.crowdproj.marketplace.common.PropContext
 import com.crowdproj.marketplace.common.PropCorSettings
 import com.crowdproj.marketplace.common.models.ProductPropertyId
+import com.crowdproj.marketplace.common.models.ProductPropertyLock
 import com.crowdproj.marketplace.common.models.PropCommand
 import com.crowdproj.marketplace.common.models.PropState
 
@@ -91,10 +92,15 @@ class ProductPropertyProcessor(private val settings: PropCorSettings = PropCorSe
                 validation {
                     worker("Копируем поля в propValidating") { propValidating = propertyRequest.deepCopy() }
                     worker("Очистка id") { propValidating.id = ProductPropertyId(propValidating.id.asString().trim()) }
+                    worker("Очистка lock") {
+                        propValidating.lock = ProductPropertyLock(propValidating.lock.asString().trim())
+                    }
                     worker("Очистка заголовка") { propValidating.name = propValidating.name.trim() }
                     worker("Очистка описания") { propValidating.description = propValidating.description.trim() }
                     validateIdNotEmpty("Проверка на непустой id")
                     validateIdProperFormat("Проверка формата id")
+                    validateLockNotEmpty("Проверка на непустой lock")
+                    validateLockProperFormat("Проверка формата lock")
                     validateNameNotEmpty("Проверка, что наименование не пустое")
                     validateNameHasContent("Проверка символов")
                     validateDescriptionNotEmpty("Проверка, что описание не пусто")
@@ -121,8 +127,13 @@ class ProductPropertyProcessor(private val settings: PropCorSettings = PropCorSe
                         propValidating = propertyRequest.deepCopy()
                     }
                     worker("Очистка id") { propValidating.id = ProductPropertyId(propValidating.id.asString().trim()) }
+                    worker("Очистка lock") {
+                        propValidating.lock = ProductPropertyLock(propValidating.lock.asString().trim())
+                    }
                     validateIdNotEmpty("Проверка на непустой id")
                     validateIdProperFormat("Проверка формата id")
+                    validateLockNotEmpty("Проверка на непустой lock")
+                    validateLockProperFormat("Проверка формата lock")
                     finishValidation("Успешное завершение процедуры валидации")
                 }
                 chain {

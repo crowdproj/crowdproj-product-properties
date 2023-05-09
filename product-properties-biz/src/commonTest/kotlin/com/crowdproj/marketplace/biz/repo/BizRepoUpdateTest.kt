@@ -64,7 +64,8 @@ class BizRepoUpdateTest {
             unitMain = ProductUnitId("100"),
             units = listOf(
                 ProductUnitId("100")
-            )
+            ),
+            lock = ProductPropertyLock("123-234-abc-ABC"),
         )
         val ctx = PropContext(
             command = command,

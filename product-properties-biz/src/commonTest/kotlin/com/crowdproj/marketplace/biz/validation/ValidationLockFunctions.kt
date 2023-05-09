@@ -13,7 +13,7 @@ import kotlin.test.assertNotEquals
 private val stub = PropStub.get()
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun validationDescriptionCorrect(command: PropCommand, processor: ProductPropertyProcessor) = runTest {
+fun validationLockCorrect(command: PropCommand, processor: ProductPropertyProcessor) = runTest {
     val ctx = PropContext(
         command = command,
         state = PropState.NONE,
@@ -30,56 +30,10 @@ fun validationDescriptionCorrect(command: PropCommand, processor: ProductPropert
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)
     assertNotEquals(PropState.FAILING, ctx.state)
-    assertEquals("abc", ctx.propValidated.description)
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun validationDescriptionTrim(command: PropCommand, processor: ProductPropertyProcessor) = runTest {
-    val ctx = PropContext(
-        command = command,
-        state = PropState.NONE,
-        workMode = PropWorkMode.TEST,
-        propertyRequest = ProductProperty(
-            id = stub.id,
-            name = stub.name,
-            description = " \n \t abc \t\n   ",
-            unitMain = stub.unitMain,
-            units = stub.units,
-            lock = ProductPropertyLock("123-234-abc-ABC"),
-        ),
-    )
-    processor.exec(ctx)
-    assertEquals(0, ctx.errors.size)
-    assertNotEquals(PropState.FAILING, ctx.state)
-    assertEquals("abc", ctx.propValidated.description)
-}
-
-@OptIn(ExperimentalCoroutinesApi::class)
-fun validationDescriptionEmpty(command: PropCommand, processor: ProductPropertyProcessor) = runTest {
-    val ctx = PropContext(
-        command = command,
-        state = PropState.NONE,
-        workMode = PropWorkMode.TEST,
-        propertyRequest = ProductProperty(
-            id = stub.id,
-            name = stub.name,
-            description = "",
-            unitMain = stub.unitMain,
-            units = stub.units,
-            lock = ProductPropertyLock("123-234-abc-ABC"),
-        ),
-    )
-    processor.exec(ctx)
-    assertEquals(1, ctx.errors.size)
-    assertEquals(PropState.FAILING, ctx.state)
-    val error = ctx.errors.firstOrNull()
-    assertEquals("description", error?.field)
-    assertContains(error?.message ?: "", "description")
-    assertEquals("validation-description-empty", error?.code)
-}
-
-@OptIn(ExperimentalCoroutinesApi::class)
-fun validationDescriptionSymbols(command: PropCommand, processor: ProductPropertyProcessor) = runTest {
+fun validationLockTrim(command: PropCommand, processor: ProductPropertyProcessor) = runTest {
     val ctx = PropContext(
         command = command,
         state = PropState.NONE,
@@ -87,17 +41,61 @@ fun validationDescriptionSymbols(command: PropCommand, processor: ProductPropert
         propertyRequest = ProductProperty(
             id = stub.id,
             name = "abc",
-            description = "!@#\$%^&*(),.{}",
+            description = "abc",
             unitMain = stub.unitMain,
             units = stub.units,
-            lock = ProductPropertyLock("123-234-abc-ABC"),
+            lock = ProductPropertyLock(" \n\t 123-234-abc-ABC \n\t "),
         ),
     )
+    processor.exec(ctx)
+    assertEquals(0, ctx.errors.size)
+    assertNotEquals(PropState.FAILING, ctx.state)
+}
+
+@OptIn(ExperimentalCoroutinesApi::class)
+fun validationLockEmpty(command: PropCommand, processor: ProductPropertyProcessor) = runTest {
+    val ctx = PropContext(
+        command = command,
+        state = PropState.NONE,
+        workMode = PropWorkMode.TEST,
+        propertyRequest = ProductProperty(
+            id = stub.id,
+            name = "abc",
+            description = "abc",
+            unitMain = stub.unitMain,
+            units = stub.units,
+            lock = ProductPropertyLock(""),
+        ),
+    )
+
     processor.exec(ctx)
     assertEquals(1, ctx.errors.size)
     assertEquals(PropState.FAILING, ctx.state)
     val error = ctx.errors.firstOrNull()
-    assertEquals("description", error?.field)
-    assertContains(error?.message ?: "", "description")
-    assertEquals("validation-description-noContent", error?.code)
+    assertEquals("lock", error?.field)
+    assertContains(error?.message ?: "", "id")
+}
+
+@OptIn(ExperimentalCoroutinesApi::class)
+fun validationLockFormat(command: PropCommand, processor: ProductPropertyProcessor) = runTest {
+    val ctx = PropContext(
+        command = command,
+        state = PropState.NONE,
+        workMode = PropWorkMode.TEST,
+        propertyRequest = ProductProperty(
+            id = stub.id,
+            name = "abc",
+            description = "abc",
+            unitMain = stub.unitMain,
+            units = stub.units,
+            lock = ProductPropertyLock("!@#\$%^&*(),.{}"),
+        ),
+    )
+
+    processor.exec(ctx)
+    assertEquals(1, ctx.errors.size)
+    assertEquals(PropState.FAILING, ctx.state)
+    val error = ctx.errors.firstOrNull()
+    assertEquals("lock", error?.field)
+    assertContains(error?.message ?: "", "id")
 }

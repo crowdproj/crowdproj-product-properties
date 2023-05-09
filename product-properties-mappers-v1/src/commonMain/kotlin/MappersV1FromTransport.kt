@@ -42,10 +42,15 @@ fun PropContext.fromTransport(request: ProductPropertyUpdateRequest) {
 fun PropContext.fromTransport(request: ProductPropertyDeleteRequest) {
     command = PropCommand.DELETE
     requestId = request.requestId()
-    propertyRequest = request.productPropertyId.toProductPropertyWithId()
+    propertyRequest = request.toInternal()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
 }
+
+private fun ProductPropertyDeleteRequest.toInternal() = ProductProperty(
+    id = this.productPropertyId.orEmpty().toProductPropertyId(),
+    lock = this.lock.toPropLock()
+)
 
 fun PropContext.fromTransport(request: ProductPropertySearchRequest) {
     command = PropCommand.SEARCH
@@ -72,7 +77,8 @@ private fun ProductPropertyUpdateObject?.toInternal() = ProductProperty(
     name = this?.name.orEmpty(),
     description = this?.description.orEmpty(),
     units = this?.units.toInternal(),
-    unitMain = this?.unitMain.toUnitid()
+    unitMain = this?.unitMain.toUnitid(),
+    lock = this?.lock.toPropLock(),
 )
 
 private fun List<String>?.fromTransport(): MutableList<ProductProperty> =
@@ -89,6 +95,8 @@ private fun IProductPropertyRequest?.requestId() = this?.requestId?.let { PropRe
 private fun String?.toProductPropertyId() = this?.let { ProductPropertyId(it) } ?: ProductPropertyId.NONE
 
 private fun String?.toProductPropertyWithId() = ProductProperty(id = this.toProductPropertyId())
+
+private fun String?.toPropLock() = this?.let { ProductPropertyLock(it) } ?: ProductPropertyLock.NONE
 
 private fun CpBaseDebug?.transportToWorkMode(): PropWorkMode = when (this?.mode) {
     CpRequestDebugMode.PROD -> PropWorkMode.PROD

@@ -5,5 +5,6 @@ import com.crowdproj.marketplace.repository.tests.RepoPropDeleteTest
 class PropRepoInMemoryDeleteTest : RepoPropDeleteTest() {
     override val repo = PropRepoInMemory(
         initObjects = initObjects,
+        randomUuid = { lockNew.asString() }
     )
 }

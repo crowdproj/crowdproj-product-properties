@@ -160,6 +160,10 @@ components:
     UserId:
       $ref: './build/base.yaml#/components/schemas/UserId'
 
+    ProductPropertyLock:
+      type: string
+      description: Версия оптимистичной блокировки
+
     ResponseResult:
       $ref: './build/base.yaml#/components/schemas/ResponseResult'
 
@@ -202,6 +206,8 @@ components:
           properties:
             id:
               $ref: '#/components/schemas/ProductPropertyId'
+            lock:
+              $ref: '#/components/schemas/ProductPropertyLock'
 
     ProductPropertyCreateRequest:
       allOf:
@@ -240,6 +246,8 @@ components:
           properties:
             productPropertyId:
               $ref: '#/components/schemas/ProductPropertyId'
+            lock:
+              $ref: '#/components/schemas/ProductPropertyLock'
 
     ProductPropertySearchRequest:
       allOf:
@@ -272,6 +280,8 @@ components:
               type: boolean
               description: Product property deletion flag
               example: false
+            lock:
+              $ref: '#/components/schemas/ProductPropertyLock'
         - $ref: '#/components/schemas/BaseProductProperty'
 
     ProductPropertyResponseSingle:

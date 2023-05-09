@@ -23,7 +23,8 @@ fun validationNameCorrect(command: PropCommand, processor: ProductPropertyProces
             name = "abc",
             description = stub.description,
             unitMain = stub.unitMain,
-            units = stub.units
+            units = stub.units,
+            lock = ProductPropertyLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
@@ -43,7 +44,8 @@ fun validationNameTrim(command: PropCommand, processor: ProductPropertyProcessor
             name = " \n \t abc \t\n   ",
             description = stub.description,
             unitMain = stub.unitMain,
-            units = stub.units
+            units = stub.units,
+            lock = ProductPropertyLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
@@ -63,7 +65,8 @@ fun validationNameEmpty(command: PropCommand, processor: ProductPropertyProcesso
             name = "",
             description = "abc",
             unitMain = stub.unitMain,
-            units = stub.units
+            units = stub.units,
+            lock = ProductPropertyLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
@@ -86,7 +89,8 @@ fun validationNameSymbols(command: PropCommand, processor: ProductPropertyProces
             name = "!@#\$%^&*(),.{}",
             description = "abc",
             unitMain = stub.unitMain,
-            units = stub.units
+            units = stub.units,
+            lock = ProductPropertyLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
