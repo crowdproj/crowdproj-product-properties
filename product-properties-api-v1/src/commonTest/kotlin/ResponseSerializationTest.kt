@@ -11,7 +11,6 @@ import kotlin.test.assertEquals
 
 class ResponseSerializationTest {
     private val response: IProductPropertyResponse = ProductPropertyCreateResponse(
-        responseType = "create",
         requestId = "123",
         result = ResponseResult.SUCCESS,
         productProperty = ProductPropertyResponseObject(

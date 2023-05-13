@@ -11,7 +11,6 @@ class MapperCreateTest {
     @Test
     fun fromTransport() {
         val req = ProductPropertyCreateRequest(
-            requestType = "create",
             requestId = "1234",
             debug = CpBaseDebug(
                 mode = CpRequestDebugMode.STUB,

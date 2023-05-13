@@ -8,7 +8,6 @@ import kotlin.test.assertEquals
 
 class RequestSerializationTest {
     private val request: IProductPropertyRequest = ProductPropertyCreateRequest(
-        requestType = "create",
         requestId = "123",
         debug = CpBaseDebug(
             mode = CpRequestDebugMode.STUB,

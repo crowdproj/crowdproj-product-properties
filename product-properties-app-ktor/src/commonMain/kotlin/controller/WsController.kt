@@ -2,8 +2,8 @@ package com.crowdproj.marketplace.app.controller
 
 import com.crowdproj.marketplace.api.logs.mapper.toLog
 import com.crowdproj.marketplace.api.v1.apiV1Mapper
-import com.crowdproj.marketplace.api.v1.encodeResponse
 import com.crowdproj.marketplace.api.v1.models.IProductPropertyRequest
+import com.crowdproj.marketplace.api.v1.models.IProductPropertyResponse
 import com.crowdproj.marketplace.app.PropAppSettings
 import com.crowdproj.marketplace.common.PropContext
 import com.crowdproj.marketplace.common.helpers.addError
@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 
 val sessions = mutableSetOf<WebSocketSession>()
 
@@ -28,7 +29,7 @@ suspend fun WebSocketSession.wsHandlerV1(appSettings: PropAppSettings) {
 
     // Handle init request
     val ctx = PropContext()
-    val init = apiV1Mapper.encodeResponse(ctx.toTransportInit())
+    val init = encodeResponse(ctx.toTransportInit())
     outgoing.send(Frame.Text(init))
 
     // Handle flow
@@ -42,7 +43,7 @@ suspend fun WebSocketSession.wsHandlerV1(appSettings: PropAppSettings) {
         try {
             val request = apiV1Mapper.decodeFromString<IProductPropertyRequest>(jsonStr)
 
-            val logId = clazzWS + request.requestType.toString()
+            val logId = clazzWS
             val logger = appSettings.corSettings.loggerProvider.logger(logId)
             logger.doWithLogging(logId) {
                 context.fromTransport(request)
@@ -54,7 +55,7 @@ suspend fun WebSocketSession.wsHandlerV1(appSettings: PropAppSettings) {
 
                 appSettings.processor.exec(context)
 
-                val result = apiV1Mapper.encodeResponse(context.toTransportProductProperty())
+                val result = encodeResponse(context.toTransportProductProperty())
 
                 // If change request, response is sent to everyone
                 if (context.isUpdatableCommand()) {
@@ -75,10 +76,13 @@ suspend fun WebSocketSession.wsHandlerV1(appSettings: PropAppSettings) {
         } catch (t: Throwable) {
             context.addError(t.asPropError())
 
-            val result = apiV1Mapper.encodeResponse(context.toTransportInit())
+            val result = encodeResponse(context.toTransportInit())
             outgoing.send(Frame.Text(result))
         }
     }.collect()
 
     sessions.remove(this)
 }
+
+private fun encodeResponse(response: IProductPropertyResponse): String =
+    Json.encodeToString(IProductPropertyResponse.serializer(), response)

@@ -5,12 +5,15 @@ pluginManagement {
         val kotlinVersion: String by settings
         val openapiVersion: String by settings
         val ktorPluginVersion: String by settings
+        val codeGeneratorVersion: String by settings
+
         kotlin("jvm") version kotlinVersion
         kotlin("multiplatform") version kotlinVersion apply false
         kotlin("plugin.serialization") version kotlinVersion apply false
 
-        id("org.openapi.generator") version openapiVersion apply false
         id("io.ktor.plugin") version ktorPluginVersion apply false
+        id("org.openapi.generator") version openapiVersion apply false
+        id("com.crowdproj.generator") version codeGeneratorVersion apply false
     }
 
 }

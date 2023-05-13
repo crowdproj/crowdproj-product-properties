@@ -11,7 +11,6 @@ class MapperUpdateTest {
     @Test
     fun fromTransport() {
         val req = ProductPropertyUpdateRequest(
-            requestType = "update",
             requestId = "1234",
             debug = CpBaseDebug(
                 mode = CpRequestDebugMode.STUB,

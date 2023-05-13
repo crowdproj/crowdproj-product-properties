@@ -11,7 +11,6 @@ class MapperDeleteTest {
     @Test
     fun fromTransport() {
         val req = ProductPropertyDeleteRequest(
-            requestType = "update",
             requestId = "1234",
             debug = CpBaseDebug(
                 mode = CpRequestDebugMode.STUB,

@@ -126,7 +126,7 @@ components:
 
     IProductPropertyRequest:
       allOf:
-        - $ref: './build/base.yaml#/components/schemas/IRequest'
+        - $ref: './base.yaml#/components/schemas/IRequest'
         - type: object
           discriminator:
             propertyName: requestType
@@ -139,7 +139,7 @@ components:
 
     IProductPropertyResponse:
       allOf:
-        - $ref: './build/base.yaml#/components/schemas/IResponse'
+        - $ref: './base.yaml#/components/schemas/IResponse'
         - type: object
           discriminator:
             propertyName: responseType
@@ -152,23 +152,23 @@ components:
               init: '#/components/schemas/ProductPropertyInitResponse'
 
     Error:
-      $ref: './build/base.yaml#/components/schemas/Error'
+      $ref: './base.yaml#/components/schemas/Error'
 
     RequestId:
-      $ref: './build/base.yaml#/components/schemas/RequestId'
+      $ref: './base.yaml#/components/schemas/RequestId'
 
     UserId:
-      $ref: './build/base.yaml#/components/schemas/UserId'
+      $ref: './base.yaml#/components/schemas/UserId'
 
     ProductPropertyLock:
       type: string
       description: Версия оптимистичной блокировки
 
     ResponseResult:
-      $ref: './build/base.yaml#/components/schemas/ResponseResult'
+      $ref: './base.yaml#/components/schemas/ResponseResult'
 
     RequestDebug:
-      $ref: './build/base.yaml#/components/schemas/CpRequestDebug'
+      $ref: './base.yaml#/components/schemas/CpRequestDebug'
 
     UnitId:
       type: string
