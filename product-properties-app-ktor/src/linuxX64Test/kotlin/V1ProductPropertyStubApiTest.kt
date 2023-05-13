@@ -1,4 +1,3 @@
-import com.crowdproj.marketplace.api.v1.apiV1Mapper
 import com.crowdproj.marketplace.api.v1.models.*
 import com.crowdproj.marketplace.app.module
 import io.ktor.client.request.*
@@ -7,6 +6,7 @@ import io.ktor.http.*
 import io.ktor.server.testing.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -31,11 +31,11 @@ class V1ProductPropertyStubApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
-            val requestJson = apiV1Mapper.encodeToString(requestObj)
+            val requestJson = Json.encodeToString(requestObj)
             setBody(requestJson)
         }
         val responseJson = response.bodyAsText()
-        val responseObj = apiV1Mapper.decodeFromString<ProductPropertyCreateResponse>(responseJson)
+        val responseObj = Json.decodeFromString<ProductPropertyCreateResponse>(responseJson)
         assertEquals(200, response.status.value)
         assertEquals("1", responseObj.productProperty?.id)
         assertEquals("LENGTH", responseObj.productProperty?.name)
@@ -58,11 +58,11 @@ class V1ProductPropertyStubApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
-            val requestJson = apiV1Mapper.encodeToString(requestObj)
+            val requestJson = Json.encodeToString(requestObj)
             setBody(requestJson)
         }
         val responseJson = response.bodyAsText()
-        val responseObj = apiV1Mapper.decodeFromString<ProductPropertyReadResponse>(responseJson)
+        val responseObj = Json.decodeFromString<ProductPropertyReadResponse>(responseJson)
         assertEquals(200, response.status.value)
         assertEquals(3, responseObj.productProperties?.size)
         assertEquals("3", responseObj.productProperties?.last()?.id)
@@ -89,11 +89,11 @@ class V1ProductPropertyStubApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
-            val requestJson = apiV1Mapper.encodeToString(requestObj)
+            val requestJson = Json.encodeToString(requestObj)
             setBody(requestJson)
         }
         val responseJson = response.bodyAsText()
-        val responseObj = apiV1Mapper.decodeFromString<ProductPropertyUpdateResponse>(responseJson)
+        val responseObj = Json.decodeFromString<ProductPropertyUpdateResponse>(responseJson)
         assertEquals(200, response.status.value)
         assertEquals("1", responseObj.productProperty?.id)
         assertEquals("LENGTH", responseObj.productProperty?.name)
@@ -117,11 +117,11 @@ class V1ProductPropertyStubApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
-            val requestJson = apiV1Mapper.encodeToString(requestObj)
+            val requestJson = Json.encodeToString(requestObj)
             setBody(requestJson)
         }
         val responseJson = response.bodyAsText()
-        val responseObj = apiV1Mapper.decodeFromString<ProductPropertyDeleteResponse>(responseJson)
+        val responseObj = Json.decodeFromString<ProductPropertyDeleteResponse>(responseJson)
         assertEquals(200, response.status.value)
         assertEquals("3", responseObj.productProperty?.id)
         assertEquals("Height", responseObj.productProperty?.name)
@@ -145,11 +145,11 @@ class V1ProductPropertyStubApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
-            val requestJson = apiV1Mapper.encodeToString(requestObj)
+            val requestJson = Json.encodeToString(requestObj)
             setBody(requestJson)
         }
         val responseJson = response.bodyAsText()
-        val responseObj = apiV1Mapper.decodeFromString<ProductPropertySearchResponse>(responseJson)
+        val responseObj = Json.decodeFromString<ProductPropertySearchResponse>(responseJson)
         assertEquals(200, response.status.value)
         assertEquals(3, responseObj.productProperties?.size)
         assertEquals("3", responseObj.productProperties?.last()?.id)

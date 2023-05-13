@@ -1,7 +1,6 @@
-import com.crowdproj.marketplace.api.v1.apiV1Mapper
+import com.crowdproj.marketplace.api.v1.decodeRequest
+import com.crowdproj.marketplace.api.v1.encodeRequest
 import com.crowdproj.marketplace.api.v1.models.*
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
 import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
@@ -23,7 +22,7 @@ class RequestSerializationTest {
 
     @Test
     fun serialize() {
-        val json = apiV1Mapper.encodeToString(request)
+        val json = encodeRequest(request)
 
         println(json)
 
@@ -39,8 +38,8 @@ class RequestSerializationTest {
 
     @Test
     fun deserialize() {
-        val json = apiV1Mapper.encodeToString(request)
-        val obj = apiV1Mapper.decodeFromString(json) as ProductPropertyCreateRequest
+        val json = encodeRequest(request)
+        val obj = decodeRequest(json) as ProductPropertyCreateRequest
 
         assertEquals(request, obj)
     }
