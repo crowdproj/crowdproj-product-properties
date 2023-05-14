@@ -14,6 +14,7 @@ abstract class RepoPropDeleteTest {
     abstract val repo: IPropRepository
     protected open val deleteSuccess = initObjects[0]
     protected open val deleteConc = initObjects[1]
+    protected open val notFoundId = ProductPropertyId("prop-repo-delete-notFound")
     protected val lockNew = ProductPropertyLock("20000000-0000-0000-0000-000000000002")
 
     @Test
@@ -53,6 +54,5 @@ abstract class RepoPropDeleteTest {
             createInitTestModel("delete"),
             createInitTestModel("deleteLock"),
         )
-        val notFoundId = ProductPropertyId("prop-repo-delete-notFound")
     }
 }

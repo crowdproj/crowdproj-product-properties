@@ -51,12 +51,14 @@ fun errorAdministration(
     violationCode: String,
     description: String,
     level: PropError.Level = PropError.Level.ERROR,
+    exception: Exception? = null,
 ) = PropError(
     field = field,
     code = "administration-$violationCode",
     group = "administration",
     message = "Microservice management error: $description",
     level = level,
+    exception = exception,
 )
 
 fun errorRepoConcurrency(

@@ -17,7 +17,7 @@ abstract class RepoPropSearchTest {
     fun searchByName() = runRepoTest {
         val result = repo.searchProductProperty(ProductPropertyFilterRequest(nameFilter = "stub"))
         assertEquals(true, result.isSuccess)
-        assertEquals(initializedObjects, result.data?.sortedBy { it.id.asString() })
+        assertEquals(initializedObjects.sortedBy { it.id.asString() }, result.data?.sortedBy { it.id.asString() })
         assertEquals(emptyList(), result.errors)
     }
 
@@ -25,7 +25,7 @@ abstract class RepoPropSearchTest {
     fun searchByDescription() = runRepoTest {
         val result = repo.searchProductProperty(ProductPropertyFilterRequest(descriptionFilter = "stub"))
         assertEquals(true, result.isSuccess)
-        assertEquals(initializedObjects, result.data?.sortedBy { it.id.asString() })
+        assertEquals(initializedObjects.sortedBy { it.id.asString() }, result.data?.sortedBy { it.id.asString() })
         assertEquals(emptyList(), result.errors)
     }
 

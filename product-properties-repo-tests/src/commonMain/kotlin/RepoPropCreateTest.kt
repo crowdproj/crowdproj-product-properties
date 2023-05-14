@@ -2,6 +2,7 @@ package com.crowdproj.marketplace.repository.tests
 
 import com.crowdproj.marketplace.common.models.ProductProperty
 import com.crowdproj.marketplace.common.models.ProductPropertyId
+import com.crowdproj.marketplace.common.models.ProductPropertyLock
 import com.crowdproj.marketplace.common.models.ProductUnitId
 import com.crowdproj.marketplace.common.repo.IPropRepository
 import com.crowdproj.marketplace.common.repo.ProductPropertyRequest
@@ -12,6 +13,8 @@ import kotlin.test.assertEquals
 @OptIn(ExperimentalCoroutinesApi::class)
 abstract class RepoPropCreateTest {
     abstract val repo: IPropRepository
+
+    protected open val lockNew: ProductPropertyLock = ProductPropertyLock("20000000-0000-0000-0000-000000000002")
 
     private val createObj = ProductProperty(
         name = "create object",
