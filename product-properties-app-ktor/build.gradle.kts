@@ -28,6 +28,10 @@ application {
     mainClass.set("io.ktor.server.cio.EngineMain")
 }
 
+jib {
+    container { mainClass = application.mainClass.get() }
+}
+
 ktor {
     docker {
         localImageName.set(project.name)
@@ -85,6 +89,7 @@ kotlin {
                 implementation(ktorIo("call-logging"))
                 implementation("ch.qos.logback:logback-classic:$logbackVersion")
                 implementation(project(":product-properties-lib-logging-logback"))
+                implementation(project(":product-properties-repo-gremlin"))
             }
         }
     }
