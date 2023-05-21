@@ -1,6 +1,6 @@
 package com.crowdproj.marketplace.biz.general
 
-import com.crowdproj.kotlin.cor.handlers.CorChainDsl
+import com.crowdproj.kotlin.cor.ICorAddExecDsl
 import com.crowdproj.kotlin.cor.handlers.worker
 import com.crowdproj.marketplace.common.PropContext
 import com.crowdproj.marketplace.common.helpers.errorAdministration
@@ -8,7 +8,7 @@ import com.crowdproj.marketplace.common.helpers.fail
 import com.crowdproj.marketplace.common.models.PropWorkMode
 import com.crowdproj.marketplace.common.repo.IPropRepository
 
-fun CorChainDsl<PropContext>.initRepo(title: String) = worker {
+fun ICorAddExecDsl<PropContext>.initRepo(title: String) = worker {
     this.title = title
     description = """
         Вычисление основного рабочего репозитория в зависимости от зпрошенного режима работы        

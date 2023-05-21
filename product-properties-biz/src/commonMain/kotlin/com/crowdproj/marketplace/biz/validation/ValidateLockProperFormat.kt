@@ -1,13 +1,13 @@
 package com.crowdproj.marketplace.biz.validation
 
-import com.crowdproj.kotlin.cor.handlers.CorChainDsl
+import com.crowdproj.kotlin.cor.ICorAddExecDsl
 import com.crowdproj.kotlin.cor.handlers.worker
 import com.crowdproj.marketplace.common.PropContext
 import com.crowdproj.marketplace.common.helpers.errorValidation
 import com.crowdproj.marketplace.common.helpers.fail
 import com.crowdproj.marketplace.common.models.ProductPropertyLock
 
-fun CorChainDsl<PropContext>.validateLockProperFormat(title: String) = worker {
+fun ICorAddExecDsl<PropContext>.validateLockProperFormat(title: String) = worker {
     this.title = title
 
     // Может быть вынесен в MkplAdId для реализации различных форматов
