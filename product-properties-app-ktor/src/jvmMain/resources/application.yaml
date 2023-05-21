@@ -8,3 +8,16 @@ ktor:
     - "http://127.0.0.1:8080/"
     - "http://0.0.0.0:8080/"
     - "http://192.168.0.182:8080/"
+  watch:
+    - classes
+    - resources
+marketplace:
+  repository:
+    test: "$DB_TYPE_TEST:inmemory"
+    prod: "$DB_TYPE_PROD:gremlin"
+    gremlin:
+      host: "$DB_GREMLIN_HOST:localhost"
+      user: "$DB_GREMLIN_HOST:root"
+      password: "$DB_GREMLIN_HOST:root_root"
+      port: "$DB_GREMLIN_PORT:8182"
+      enableSsl: false

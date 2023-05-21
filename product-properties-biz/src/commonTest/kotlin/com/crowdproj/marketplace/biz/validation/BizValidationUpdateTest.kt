@@ -1,14 +1,21 @@
 package com.crowdproj.marketplace.biz.validation
 
 import com.crowdproj.marketplace.biz.ProductPropertyProcessor
+import com.crowdproj.marketplace.common.PropCorSettings
 import com.crowdproj.marketplace.common.models.PropCommand
+import com.crowdproj.marketplace.repository.stubs.PropRepoStub
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class BizValidationUpdateTest {
     private val command = PropCommand.UPDATE
-    private val processor = ProductPropertyProcessor()
+    private val settings by lazy {
+        PropCorSettings(
+            repoTest = PropRepoStub()
+        )
+    }
+    private val processor = ProductPropertyProcessor(settings)
 
     @Test
     fun correctName() = validationNameCorrect(command, processor)
@@ -45,4 +52,16 @@ class BizValidationUpdateTest {
 
     @Test
     fun badFormatId() = validationIdFormat(command, processor)
+
+    @Test
+    fun correctLock() = validationLockCorrect(command, processor)
+
+    @Test
+    fun trimLock() = validationLockTrim(command, processor)
+
+    @Test
+    fun emptyLock() = validationLockEmpty(command, processor)
+
+    @Test
+    fun badFormatLock() = validationLockFormat(command, processor)
 }

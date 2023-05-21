@@ -29,6 +29,10 @@ kotlin {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
 
+                implementation(project(":product-properties-repo-stubs"))
+                implementation(project(":product-properties-repo-tests"))
+                implementation(project(":product-properties-repo-in-memory"))
+
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
             }
         }

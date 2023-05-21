@@ -62,6 +62,7 @@ private fun ProductProperty.toTransport() = ProductPropertyResponseObject(
     unitMain = unitMain.takeIf { it != ProductUnitId.NONE }?.asString(),
     units = units.mapNotNull { it.takeIf { it != ProductUnitId.NONE }?.asString() },
     deleted = deleted,
+    lock = lock.takeIf { it != ProductPropertyLock.NONE }?.asString()
 )
 
 private fun List<PropError>.toTransportErrors(): List<Error>? = this

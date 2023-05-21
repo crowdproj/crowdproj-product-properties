@@ -1,12 +1,9 @@
 package com.crowdproj.marketplace.biz.validation
 
-import PropStub
 import com.crowdproj.marketplace.biz.ProductPropertyProcessor
 import com.crowdproj.marketplace.common.PropContext
-import com.crowdproj.marketplace.common.models.ProductProperty
-import com.crowdproj.marketplace.common.models.PropCommand
-import com.crowdproj.marketplace.common.models.PropState
-import com.crowdproj.marketplace.common.models.PropWorkMode
+import com.crowdproj.marketplace.common.models.*
+import com.crowdproj.marketplace.stubs.PropStub
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlin.test.assertContains
@@ -26,7 +23,8 @@ fun validationDescriptionCorrect(command: PropCommand, processor: ProductPropert
             name = "abc",
             description = "abc",
             unitMain = stub.unitMain,
-            units = stub.units
+            units = stub.units,
+            lock = ProductPropertyLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
@@ -46,7 +44,8 @@ fun validationDescriptionTrim(command: PropCommand, processor: ProductPropertyPr
             name = stub.name,
             description = " \n \t abc \t\n   ",
             unitMain = stub.unitMain,
-            units = stub.units
+            units = stub.units,
+            lock = ProductPropertyLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
@@ -66,7 +65,8 @@ fun validationDescriptionEmpty(command: PropCommand, processor: ProductPropertyP
             name = stub.name,
             description = "",
             unitMain = stub.unitMain,
-            units = stub.units
+            units = stub.units,
+            lock = ProductPropertyLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
@@ -89,7 +89,8 @@ fun validationDescriptionSymbols(command: PropCommand, processor: ProductPropert
             name = "abc",
             description = "!@#\$%^&*(),.{}",
             unitMain = stub.unitMain,
-            units = stub.units
+            units = stub.units,
+            lock = ProductPropertyLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)

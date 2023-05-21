@@ -1,9 +1,9 @@
 package com.crowdproj.marketplace.biz.validation
 
-import PropStub
 import com.crowdproj.marketplace.biz.ProductPropertyProcessor
 import com.crowdproj.marketplace.common.PropContext
 import com.crowdproj.marketplace.common.models.*
+import com.crowdproj.marketplace.stubs.PropStub
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlin.test.assertContains
@@ -23,7 +23,8 @@ fun validationIdCorrect(command: PropCommand, processor: ProductPropertyProcesso
             name = "abc",
             description = stub.description,
             unitMain = stub.unitMain,
-            units = stub.units
+            units = stub.units,
+            lock = ProductPropertyLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
@@ -42,7 +43,8 @@ fun validationIdTrim(command: PropCommand, processor: ProductPropertyProcessor) 
             name = "abc",
             description = stub.description,
             unitMain = stub.unitMain,
-            units = stub.units
+            units = stub.units,
+            lock = ProductPropertyLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
@@ -62,7 +64,8 @@ fun validationIdEmpty(command: PropCommand, processor: ProductPropertyProcessor)
             name = "abc",
             description = stub.description,
             unitMain = stub.unitMain,
-            units = stub.units
+            units = stub.units,
+            lock = ProductPropertyLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
@@ -85,7 +88,8 @@ fun validationIdFormat(command: PropCommand, processor: ProductPropertyProcessor
             name = "abc",
             description = stub.description,
             unitMain = stub.unitMain,
-            units = stub.units
+            units = stub.units,
+            lock = ProductPropertyLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
@@ -109,7 +113,8 @@ fun validationIdsCorrect(command: PropCommand, processor: ProductPropertyProcess
                 name = "abc",
                 description = stub.description,
                 unitMain = stub.unitMain,
-                units = stub.units
+                units = stub.units,
+                lock = ProductPropertyLock("123-234-abc-ABC"),
             )
         ),
     )
@@ -130,7 +135,8 @@ fun validationIdsTrim(command: PropCommand, processor: ProductPropertyProcessor)
                 name = "abc",
                 description = stub.description,
                 unitMain = stub.unitMain,
-                units = stub.units
+                units = stub.units,
+                lock = ProductPropertyLock("123-234-abc-ABC"),
             )
         ),
     )
@@ -152,7 +158,8 @@ fun validationIdsEmpty(command: PropCommand, processor: ProductPropertyProcessor
                 name = "abc",
                 description = stub.description,
                 unitMain = stub.unitMain,
-                units = stub.units
+                units = stub.units,
+                lock = ProductPropertyLock("123-234-abc-ABC"),
             )
         ),
     )
@@ -177,7 +184,8 @@ fun validationIdsFormat(command: PropCommand, processor: ProductPropertyProcesso
                 name = "abc",
                 description = stub.description,
                 unitMain = stub.unitMain,
-                units = stub.units
+                units = stub.units,
+                lock = ProductPropertyLock("123-234-abc-ABC"),
             )
         ),
     )

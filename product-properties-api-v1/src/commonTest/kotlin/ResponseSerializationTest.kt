@@ -1,17 +1,15 @@
-import com.crowdproj.marketplace.api.v1.apiV1Mapper
+import com.crowdproj.marketplace.api.v1.decodeResponse
+import com.crowdproj.marketplace.api.v1.encodeResponse
 import com.crowdproj.marketplace.api.v1.models.IProductPropertyResponse
 import com.crowdproj.marketplace.api.v1.models.ProductPropertyCreateResponse
 import com.crowdproj.marketplace.api.v1.models.ProductPropertyResponseObject
 import com.crowdproj.marketplace.api.v1.models.ResponseResult
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
 import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
 
 class ResponseSerializationTest {
     private val response: IProductPropertyResponse = ProductPropertyCreateResponse(
-        responseType = "create",
         requestId = "123",
         result = ResponseResult.SUCCESS,
         productProperty = ProductPropertyResponseObject(
@@ -27,7 +25,7 @@ class ResponseSerializationTest {
 
     @Test
     fun serialize() {
-        val json = apiV1Mapper.encodeToString(response)
+        val json = encodeResponse(response)
 
         println(json)
 
@@ -43,8 +41,8 @@ class ResponseSerializationTest {
 
     @Test
     fun deserialize() {
-        val json = apiV1Mapper.encodeToString(response)
-        val obj = apiV1Mapper.decodeFromString(json) as ProductPropertyCreateResponse
+        val json = encodeResponse(response)
+        val obj = decodeResponse(json) as ProductPropertyCreateResponse
 
         assertEquals(response, obj)
     }
