@@ -4,6 +4,7 @@ import com.crowdproj.marketplace.api.logs.mapper.toLog
 import com.crowdproj.marketplace.api.v1.models.IProductPropertyRequest
 import com.crowdproj.marketplace.api.v1.models.IProductPropertyResponse
 import com.crowdproj.marketplace.app.PropAppSettings
+import com.crowdproj.marketplace.app.plugins.getPrincipal
 import com.crowdproj.marketplace.common.PropContext
 import com.crowdproj.marketplace.common.helpers.asPropError
 import com.crowdproj.marketplace.common.models.PropCommand
@@ -12,6 +13,7 @@ import com.crowdproj.marketplace.logging.common.IPropLogWrapper
 import com.crowdproj.marketplace.mappers.v1.fromTransport
 import com.crowdproj.marketplace.mappers.v1.toTransportProductProperty
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import kotlinx.datetime.Clock
@@ -28,6 +30,7 @@ suspend inline fun <reified Rq : IProductPropertyRequest, reified Rs : IProductP
     val processor = appSettings.processor
     try {
         logger.doWithLogging(id = logId) {
+            ctx.principal = getPrincipal(appSettings)
             val request = this.receive<Rq>()
             ctx.fromTransport(request)
             logger.info(

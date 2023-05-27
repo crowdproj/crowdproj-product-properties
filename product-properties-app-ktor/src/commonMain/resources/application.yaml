@@ -4,3 +4,10 @@ ktor:
   application:
     modules:
       - com.crowdproj.marketplace.app.ApplicationKt.module
+
+jwt:
+  secret: "secret"
+  issuer: "Crowdproj"
+  audience: "prop-users"
+  realm: "product-properties"
+  clientId: "crowdproj-product-properties-service"
