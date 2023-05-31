@@ -194,6 +194,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UnitId'
+        ownerId:
+          $ref: '#/components/schemas/UserId'
 
     ProductPropertyCreateObject:
       allOf:

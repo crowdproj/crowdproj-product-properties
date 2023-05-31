@@ -1,6 +1,9 @@
+package com.crowdproj.marketplace.app
+
 import com.crowdproj.marketplace.api.v1.decodeResponse
 import com.crowdproj.marketplace.api.v1.encodeRequest
 import com.crowdproj.marketplace.api.v1.models.*
+import com.crowdproj.marketplace.app.helpers.testSettings
 import io.ktor.client.plugins.websocket.*
 import io.ktor.server.testing.*
 import io.ktor.websocket.*
@@ -123,6 +126,10 @@ class V1WebsocketStubTest {
         request: IProductPropertyRequest,
         crossinline assertBlock: (R) -> Unit
     ) = testApplication {
+        application {
+            moduleJvm(appSettings = testSettings())
+        }
+
         val client = createClient {
             install(WebSockets)
         }

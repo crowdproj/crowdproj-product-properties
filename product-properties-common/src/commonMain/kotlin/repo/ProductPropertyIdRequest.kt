@@ -8,5 +8,5 @@ data class ProductPropertyIdRequest(
     val id: ProductPropertyId,
     val lock: ProductPropertyLock = ProductPropertyLock.NONE,
 ) {
-    constructor(productProperty: ProductProperty) : this(productProperty.id)
+    constructor(productProperty: ProductProperty) : this(productProperty.id, productProperty.lock)
 }

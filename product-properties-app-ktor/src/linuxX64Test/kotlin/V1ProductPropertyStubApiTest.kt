@@ -1,5 +1,7 @@
+package com.crowdproj.marketplace.app
+
 import com.crowdproj.marketplace.api.v1.models.*
-import com.crowdproj.marketplace.app.module
+import com.crowdproj.marketplace.app.helpers.testSettings
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -14,7 +16,7 @@ class V1ProductPropertyStubApiTest {
     @Test
     fun create() = testApplication {
         application {
-            module()
+            module(testSettings())
         }
         val response = client.post("/v1/product/property/create") {
             val requestObj = ProductPropertyCreateRequest(
@@ -46,7 +48,7 @@ class V1ProductPropertyStubApiTest {
     @Test
     fun read() = testApplication {
         application {
-            module()
+            module(testSettings())
         }
         val response = client.post("/v1/product/properties/read") {
             val requestObj = ProductPropertyReadRequest(
@@ -72,7 +74,7 @@ class V1ProductPropertyStubApiTest {
     @Test
     fun update() = testApplication {
         application {
-            module()
+            module(testSettings())
         }
         val response = client.post("/v1/product/property/update") {
             val requestObj = ProductPropertyUpdateRequest(
@@ -105,7 +107,7 @@ class V1ProductPropertyStubApiTest {
     @Test
     fun delete() = testApplication {
         application {
-            module()
+            module(testSettings())
         }
         val response = client.post("/v1/product/property/delete") {
             val requestObj = ProductPropertyDeleteRequest(
@@ -131,7 +133,7 @@ class V1ProductPropertyStubApiTest {
     @Test
     fun search() = testApplication {
         application {
-            module()
+            module(testSettings())
         }
         val response = client.post("/v1/product/property/search") {
             val requestObj = ProductPropertySearchRequest(

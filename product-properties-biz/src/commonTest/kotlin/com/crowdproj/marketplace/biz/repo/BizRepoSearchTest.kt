@@ -4,6 +4,8 @@ import com.crowdproj.marketplace.biz.ProductPropertyProcessor
 import com.crowdproj.marketplace.common.PropContext
 import com.crowdproj.marketplace.common.PropCorSettings
 import com.crowdproj.marketplace.common.models.*
+import com.crowdproj.marketplace.common.permissions.PropPrincipalModel
+import com.crowdproj.marketplace.common.permissions.PropUserGroups
 import com.crowdproj.marketplace.common.repo.ProductPropertiesResponse
 import com.crowdproj.marketplace.repository.tests.PropRepositoryMock
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -12,7 +14,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class BizRepoSearchTest {
-
+    private val userId = PropUserId("321")
     private val command = PropCommand.SEARCH
     private val initProp = ProductProperty(
         id = ProductPropertyId("123"),
@@ -21,7 +23,8 @@ class BizRepoSearchTest {
         unitMain = ProductUnitId("100"),
         units = listOf(
             ProductUnitId("100"), ProductUnitId("200"), ProductUnitId("300")
-        )
+        ),
+        ownerId = userId
     )
     private val repo by lazy {
         PropRepositoryMock(
@@ -50,6 +53,13 @@ class BizRepoSearchTest {
             propertiesFilterRequest = ProductPropertyFilter(
                 name = "ab",
                 description = ""
+            ),
+            principal = PropPrincipalModel(
+                id = userId,
+                groups = setOf(
+                    PropUserGroups.USER,
+                    PropUserGroups.TEST,
+                )
             ),
         )
         processor.exec(ctx)

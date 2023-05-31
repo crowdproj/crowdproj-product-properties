@@ -33,5 +33,13 @@ data class KtorAuthConfig(
             realm = "product-properties",
             clientId = "crowdproj-product-properties-service",
         )
+
+        val NONE = KtorAuthConfig(
+            secret = "",
+            issuer = "",
+            audience = "",
+            realm = "",
+            clientId = "",
+        )
     }
 }

@@ -7,6 +7,10 @@ import com.crowdproj.marketplace.biz.general.initRepo
 import com.crowdproj.marketplace.biz.general.operation
 import com.crowdproj.marketplace.biz.general.prepareResult
 import com.crowdproj.marketplace.biz.general.stubs
+import com.crowdproj.marketplace.biz.permissions.accessValidation
+import com.crowdproj.marketplace.biz.permissions.accessValidationProps
+import com.crowdproj.marketplace.biz.permissions.chainPermissions
+import com.crowdproj.marketplace.biz.permissions.frontPermissions
 import com.crowdproj.marketplace.biz.repo.*
 import com.crowdproj.marketplace.biz.validation.*
 import com.crowdproj.marketplace.biz.workers.*
@@ -44,11 +48,14 @@ class ProductPropertyProcessor(private val settings: PropCorSettings = PropCorSe
                     validateDescriptionHasContent("Проверка символов")
                     finishValidation("Завершение проверок")
                 }
+                chainPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика сохранения"
                     repoPrepareCreate("Подготовка объекта для сохранения")
+                    accessValidation("Вычисление прав доступа")
                     repoCreate("Создание свойства продукта в БД")
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
             operation("Получить cвойства продукта", PropCommand.READ) {
@@ -69,15 +76,18 @@ class ProductPropertyProcessor(private val settings: PropCorSettings = PropCorSe
                     validateIdsProperFormat("Проверка формата ids")
                     finishPropsValidation("Завершение проверок")
                 }
+                chainPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика чтения"
                     repoRead("Чтение cвойства продукта из БД")
+                    accessValidationProps("Вычисление прав доступа")
                     worker {
                         title = "Подготовка ответа для Read"
                         on { state == PropState.RUNNING }
                         handle { propsRepoDone = propsRepoRead }
                     }
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
             operation("Изменить cвойство продукта", PropCommand.UPDATE) {
@@ -107,12 +117,15 @@ class ProductPropertyProcessor(private val settings: PropCorSettings = PropCorSe
                     validateDescriptionHasContent("Проверка символов")
                     finishValidation("Завершение проверок")
                 }
+                chainPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика сохранения"
                     repoReadOne("Чтение cвойства продукта из БД")
                     repoPrepareUpdate("Подготовка cвойства продукта для обновления")
+                    accessValidation("Вычисление прав доступа")
                     repoUpdate("Обновление cвойства продукта в БД")
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
             operation("Удалить cвойство продукта", PropCommand.DELETE) {
@@ -136,12 +149,15 @@ class ProductPropertyProcessor(private val settings: PropCorSettings = PropCorSe
                     validateLockProperFormat("Проверка формата lock")
                     finishValidation("Успешное завершение процедуры валидации")
                 }
+                chainPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика удаления"
                     repoReadOne("Чтение cвойства продукта из БД")
                     repoPrepareDelete("Подготовка cвойства продукта для удаления")
+                    accessValidation("Вычисление прав доступа")
                     repoDelete("Удаление cвойства продукта из БД")
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
             operation("Поиск cвойств продукта", PropCommand.SEARCH) {
@@ -158,7 +174,10 @@ class ProductPropertyProcessor(private val settings: PropCorSettings = PropCorSe
 
                     finishPropsFilterValidation("Успешное завершение процедуры валидации")
                 }
+                chainPermissions("Вычисление разрешений для пользователя")
                 repoSearch("Поиск свойств продукта в БД по фильтру")
+                accessValidationProps("Вычисление прав доступа")
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
         }.build()

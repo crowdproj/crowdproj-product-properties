@@ -19,6 +19,7 @@ fun ICorAddExecDsl<PropContext>.repoSearch(title: String) = worker {
         val resultProps = result.data
         if (result.isSuccess && resultProps != null) {
             propsRepoDone = resultProps.toMutableList()
+            propsRepoRead = propsRepoDone
         } else {
             state = PropState.FAILING
             errors.addAll(result.errors)

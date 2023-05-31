@@ -1,7 +1,6 @@
 package com.crowdproj.marketplace.app
 
 import com.auth0.jwt.JWT
-import com.crowdproj.marketplace.app.base.KtorAuthConfig
 import com.crowdproj.marketplace.app.base.KtorAuthConfig.Companion.GROUPS_CLAIM
 import com.crowdproj.marketplace.app.base.resolveAlgorithm
 import com.crowdproj.marketplace.app.controller.v1ProductProperty
@@ -29,7 +28,6 @@ fun main(args: Array<String>) = EngineMain.main(args)
 @Suppress("unused") // Referenced in application.yaml
 fun Application.moduleJvm(
     appSettings: PropAppSettings = initAppSettings(),
-    authConfig: KtorAuthConfig = KtorAuthConfig(environment)
 ) {
     initPlugins(appSettings)
 
@@ -45,6 +43,7 @@ fun Application.moduleJvm(
 
     install(Authentication) {
         jwt("auth-jwt") {
+            val authConfig = appSettings.auth
             realm = authConfig.realm
 
             verifier {

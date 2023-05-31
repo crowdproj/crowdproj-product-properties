@@ -3,6 +3,8 @@ package com.crowdproj.marketplace.biz.validation
 import com.crowdproj.marketplace.biz.ProductPropertyProcessor
 import com.crowdproj.marketplace.common.PropContext
 import com.crowdproj.marketplace.common.models.*
+import com.crowdproj.marketplace.common.permissions.PropPrincipalModel
+import com.crowdproj.marketplace.common.permissions.PropUserGroups
 import com.crowdproj.marketplace.stubs.PropStub
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -26,6 +28,13 @@ fun validationDescriptionCorrect(command: PropCommand, processor: ProductPropert
             units = stub.units,
             lock = ProductPropertyLock("123-234-abc-ABC"),
         ),
+        principal = PropPrincipalModel(
+            id = stub.ownerId,
+            groups = setOf(
+                PropUserGroups.USER,
+                PropUserGroups.TEST,
+            )
+        ),
     )
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)
@@ -46,6 +55,13 @@ fun validationDescriptionTrim(command: PropCommand, processor: ProductPropertyPr
             unitMain = stub.unitMain,
             units = stub.units,
             lock = ProductPropertyLock("123-234-abc-ABC"),
+        ),
+        principal = PropPrincipalModel(
+            id = stub.ownerId,
+            groups = setOf(
+                PropUserGroups.USER,
+                PropUserGroups.TEST,
+            )
         ),
     )
     processor.exec(ctx)
