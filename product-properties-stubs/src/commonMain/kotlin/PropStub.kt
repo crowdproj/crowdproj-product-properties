@@ -1,8 +1,6 @@
 package com.crowdproj.marketplace.stubs
 
-import com.crowdproj.marketplace.common.models.ProductProperty
-import com.crowdproj.marketplace.common.models.ProductPropertyId
-import com.crowdproj.marketplace.common.models.ProductUnitId
+import com.crowdproj.marketplace.common.models.*
 
 object PropStub {
     private val length = ProductProperty(
@@ -10,7 +8,9 @@ object PropStub {
         name = "Length",
         description = "Length description",
         unitMain = ProductUnitId("100"),
-        units = listOf(ProductUnitId("100"), ProductUnitId("200"), ProductUnitId("300"))
+        units = listOf(ProductUnitId("100"), ProductUnitId("200"), ProductUnitId("300")),
+        ownerId = PropUserId("user-1"),
+        lock = ProductPropertyLock("12345")
     )
 
     private val weight = ProductProperty(
@@ -18,7 +18,8 @@ object PropStub {
         name = "Weight",
         description = "Weight description",
         unitMain = ProductUnitId("100"),
-        units = listOf(ProductUnitId("100"), ProductUnitId("200"), ProductUnitId("300"))
+        units = listOf(ProductUnitId("100"), ProductUnitId("200"), ProductUnitId("300")),
+        ownerId = PropUserId("user-1"),
     )
 
     private val height = ProductProperty(
@@ -26,7 +27,8 @@ object PropStub {
         name = "Height",
         description = "Height description",
         unitMain = ProductUnitId("100"),
-        units = listOf(ProductUnitId("100"), ProductUnitId("200"), ProductUnitId("300"))
+        units = listOf(ProductUnitId("100"), ProductUnitId("200"), ProductUnitId("300")),
+        ownerId = PropUserId("user-1"),
     )
 
     fun get() = length

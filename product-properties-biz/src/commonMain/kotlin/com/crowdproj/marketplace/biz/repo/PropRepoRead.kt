@@ -1,12 +1,12 @@
 package com.crowdproj.marketplace.biz.repo
 
-import com.crowdproj.kotlin.cor.handlers.CorChainDsl
+import com.crowdproj.kotlin.cor.ICorAddExecDsl
 import com.crowdproj.kotlin.cor.handlers.worker
 import com.crowdproj.marketplace.common.PropContext
 import com.crowdproj.marketplace.common.models.PropState
 import com.crowdproj.marketplace.common.repo.ProductPropertiesIdsRequest
 
-fun CorChainDsl<PropContext>.repoRead(title: String) = worker {
+fun ICorAddExecDsl<PropContext>.repoRead(title: String) = worker {
     this.title = title
     description = "Чтение свойств продукта из БД"
     on { state == PropState.RUNNING }
@@ -23,7 +23,7 @@ fun CorChainDsl<PropContext>.repoRead(title: String) = worker {
     }
 }
 
-fun CorChainDsl<PropContext>.repoReadOne(title: String) = worker {
+fun ICorAddExecDsl<PropContext>.repoReadOne(title: String) = worker {
     this.title = title
     description = "Чтение свойства продукта из БД"
     on { state == PropState.RUNNING }

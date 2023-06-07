@@ -4,6 +4,8 @@ import com.crowdproj.marketplace.biz.ProductPropertyProcessor
 import com.crowdproj.marketplace.common.PropContext
 import com.crowdproj.marketplace.common.PropCorSettings
 import com.crowdproj.marketplace.common.models.*
+import com.crowdproj.marketplace.common.permissions.PropPrincipalModel
+import com.crowdproj.marketplace.common.permissions.PropUserGroups
 import com.crowdproj.marketplace.common.repo.ProductPropertiesResponse
 import com.crowdproj.marketplace.common.repo.ProductPropertyResponse
 import com.crowdproj.marketplace.repository.tests.PropRepositoryMock
@@ -15,6 +17,7 @@ import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class BizRepoDeleteTest {
+    private val userId = PropUserId("321")
     private val command = PropCommand.DELETE
     private val initProp = ProductProperty(
         id = ProductPropertyId("123"),
@@ -25,6 +28,7 @@ class BizRepoDeleteTest {
             ProductUnitId("100"), ProductUnitId("200"), ProductUnitId("300")
         ),
         lock = ProductPropertyLock("123-234-abc-ABC"),
+        ownerId = userId
     )
     private val repo by lazy {
         PropRepositoryMock(
@@ -62,6 +66,13 @@ class BizRepoDeleteTest {
             state = PropState.NONE,
             workMode = PropWorkMode.TEST,
             propertyRequest = propToDelete,
+            principal = PropPrincipalModel(
+                id = userId,
+                groups = setOf(
+                    PropUserGroups.USER,
+                    PropUserGroups.TEST,
+                )
+            ),
         )
         processor.exec(ctx)
         assertEquals(PropState.FINISHING, ctx.state)

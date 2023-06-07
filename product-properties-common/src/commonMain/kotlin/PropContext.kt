@@ -1,6 +1,8 @@
 package com.crowdproj.marketplace.common
 
 import com.crowdproj.marketplace.common.models.*
+import com.crowdproj.marketplace.common.permissions.PropPrincipalModel
+import com.crowdproj.marketplace.common.permissions.PropUserPermissions
 import com.crowdproj.marketplace.common.repo.IPropRepository
 import com.crowdproj.marketplace.common.stubs.PropStubs
 import kotlinx.datetime.Instant
@@ -13,6 +15,10 @@ data class PropContext(
 
     var workMode: PropWorkMode = PropWorkMode.PROD,
     var stubCase: PropStubs = PropStubs.NONE,
+
+    var principal: PropPrincipalModel = PropPrincipalModel.NONE,
+    val permissionsChain: MutableSet<PropUserPermissions> = mutableSetOf(),
+    var permitted: Boolean = false,
 
     var propRepo: IPropRepository = IPropRepository.NONE,
     var propRepoRead: ProductProperty = ProductProperty(),

@@ -21,3 +21,10 @@ marketplace:
       password: "$DB_GREMLIN_HOST:root_root"
       port: "$DB_GREMLIN_PORT:8182"
       enableSsl: false
+
+jwt:
+  issuer: "http://localhost:8081/auth/realms/crowdproj"
+  audience: "product-properties"
+  realm: "crowdproj-marketplace"
+  clientId: "product-properties-service"
+  certUrl: "http://localhost:8081/auth/realms/crowdproj/protocol/openid-connect/certs"

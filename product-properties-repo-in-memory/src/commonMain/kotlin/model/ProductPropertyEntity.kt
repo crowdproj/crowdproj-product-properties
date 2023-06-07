@@ -1,9 +1,6 @@
 package com.crowdproj.marketplace.repository.inmemory.model
 
-import com.crowdproj.marketplace.common.models.ProductProperty
-import com.crowdproj.marketplace.common.models.ProductPropertyId
-import com.crowdproj.marketplace.common.models.ProductPropertyLock
-import com.crowdproj.marketplace.common.models.ProductUnitId
+import com.crowdproj.marketplace.common.models.*
 
 data class ProductPropertyEntity(
     val id: String? = null,
@@ -13,6 +10,7 @@ data class ProductPropertyEntity(
     val unitMain: String? = null,
     val deleted: Boolean = false,
     val lock: String? = null,
+    val ownerId: String? = null,
 ) {
     constructor(model: ProductProperty) : this(
         id = model.id.asString().takeIf { it.isNotBlank() },
@@ -21,7 +19,8 @@ data class ProductPropertyEntity(
         units = model.units.filter { it != ProductUnitId.NONE }.map { it.asString() },
         unitMain = model.unitMain.takeIf { it != ProductUnitId.NONE }?.asString(),
         deleted = model.deleted,
-        lock = model.lock.asString().takeIf { it.isNotBlank() }
+        lock = model.lock.asString().takeIf { it.isNotBlank() },
+        ownerId = model.ownerId.asString().takeIf { it.isNotBlank() }
     )
 
     fun toInternal() = ProductProperty(
@@ -32,5 +31,6 @@ data class ProductPropertyEntity(
         units = units.map { ProductUnitId(it) },
         deleted = deleted,
         lock = lock?.let { ProductPropertyLock(it) } ?: ProductPropertyLock.NONE,
+        ownerId = ownerId?.let { PropUserId(it) } ?: PropUserId.NONE
     )
 }

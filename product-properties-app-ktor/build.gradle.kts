@@ -74,6 +74,7 @@ kotlin {
                 implementation(ktorIo("caching-headers"))
                 implementation(ktorIo("auto-head-response"))
                 implementation(ktorIo("kotlinx-json", prefix = "serialization-"))
+                implementation(ktorIo("auth")) // "io.ktor:ktor-auth:$ktorVersion"
             }
         }
         val commonTest by getting {
@@ -90,6 +91,8 @@ kotlin {
                 implementation("ch.qos.logback:logback-classic:$logbackVersion")
                 implementation(project(":product-properties-lib-logging-logback"))
                 implementation(project(":product-properties-repo-gremlin"))
+                implementation(ktorIo("auth-jwt"))
+                implementation(ktorIo("default-headers")) // "io.ktor:ktor-cors:$ktorVersion"
             }
         }
     }

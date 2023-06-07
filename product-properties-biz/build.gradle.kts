@@ -19,6 +19,7 @@ kotlin {
 
                 implementation(project(":product-properties-common"))
                 implementation(project(":product-properties-stubs"))
+                implementation(project(":product-properties-auth"))
                 implementation("com.crowdproj:kotlin-cor:$kotlinCorVersion")
             }
         }

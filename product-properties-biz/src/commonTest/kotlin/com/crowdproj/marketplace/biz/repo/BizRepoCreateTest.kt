@@ -4,6 +4,8 @@ import com.crowdproj.marketplace.biz.ProductPropertyProcessor
 import com.crowdproj.marketplace.common.PropContext
 import com.crowdproj.marketplace.common.PropCorSettings
 import com.crowdproj.marketplace.common.models.*
+import com.crowdproj.marketplace.common.permissions.PropPrincipalModel
+import com.crowdproj.marketplace.common.permissions.PropUserGroups
 import com.crowdproj.marketplace.common.repo.ProductPropertyResponse
 import com.crowdproj.marketplace.repository.tests.PropRepositoryMock
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -13,6 +15,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
 class BizRepoCreateTest {
+    private val userId = PropUserId("321")
     private val command = PropCommand.CREATE
     private val uuid = "10000000-0000-0000-0000-000000000001"
     private val repo = PropRepositoryMock(
@@ -49,6 +52,13 @@ class BizRepoCreateTest {
             state = PropState.NONE,
             workMode = PropWorkMode.TEST,
             propertyRequest = propertyToCreate,
+            principal = PropPrincipalModel(
+                id = userId,
+                groups = setOf(
+                    PropUserGroups.USER,
+                    PropUserGroups.TEST,
+                )
+            ),
         )
         processor.exec(ctx)
         assertEquals(PropState.FINISHING, ctx.state)

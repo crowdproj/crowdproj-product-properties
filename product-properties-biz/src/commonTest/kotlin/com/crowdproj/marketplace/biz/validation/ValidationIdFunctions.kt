@@ -3,6 +3,8 @@ package com.crowdproj.marketplace.biz.validation
 import com.crowdproj.marketplace.biz.ProductPropertyProcessor
 import com.crowdproj.marketplace.common.PropContext
 import com.crowdproj.marketplace.common.models.*
+import com.crowdproj.marketplace.common.permissions.PropPrincipalModel
+import com.crowdproj.marketplace.common.permissions.PropUserGroups
 import com.crowdproj.marketplace.stubs.PropStub
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -26,6 +28,13 @@ fun validationIdCorrect(command: PropCommand, processor: ProductPropertyProcesso
             units = stub.units,
             lock = ProductPropertyLock("123-234-abc-ABC"),
         ),
+        principal = PropPrincipalModel(
+            id = stub.ownerId,
+            groups = setOf(
+                PropUserGroups.USER,
+                PropUserGroups.TEST,
+            )
+        ),
     )
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)
@@ -45,6 +54,13 @@ fun validationIdTrim(command: PropCommand, processor: ProductPropertyProcessor) 
             unitMain = stub.unitMain,
             units = stub.units,
             lock = ProductPropertyLock("123-234-abc-ABC"),
+        ),
+        principal = PropPrincipalModel(
+            id = stub.ownerId,
+            groups = setOf(
+                PropUserGroups.USER,
+                PropUserGroups.TEST,
+            )
         ),
     )
     processor.exec(ctx)
@@ -66,6 +82,13 @@ fun validationIdEmpty(command: PropCommand, processor: ProductPropertyProcessor)
             unitMain = stub.unitMain,
             units = stub.units,
             lock = ProductPropertyLock("123-234-abc-ABC"),
+        ),
+        principal = PropPrincipalModel(
+            id = stub.ownerId,
+            groups = setOf(
+                PropUserGroups.USER,
+                PropUserGroups.TEST,
+            )
         ),
     )
     processor.exec(ctx)
@@ -90,6 +113,13 @@ fun validationIdFormat(command: PropCommand, processor: ProductPropertyProcessor
             unitMain = stub.unitMain,
             units = stub.units,
             lock = ProductPropertyLock("123-234-abc-ABC"),
+        ),
+        principal = PropPrincipalModel(
+            id = stub.ownerId,
+            groups = setOf(
+                PropUserGroups.USER,
+                PropUserGroups.TEST,
+            )
         ),
     )
     processor.exec(ctx)
@@ -117,6 +147,13 @@ fun validationIdsCorrect(command: PropCommand, processor: ProductPropertyProcess
                 lock = ProductPropertyLock("123-234-abc-ABC"),
             )
         ),
+        principal = PropPrincipalModel(
+            id = stub.ownerId,
+            groups = setOf(
+                PropUserGroups.USER,
+                PropUserGroups.TEST,
+            )
+        ),
     )
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)
@@ -137,6 +174,13 @@ fun validationIdsTrim(command: PropCommand, processor: ProductPropertyProcessor)
                 unitMain = stub.unitMain,
                 units = stub.units,
                 lock = ProductPropertyLock("123-234-abc-ABC"),
+            )
+        ),
+        principal = PropPrincipalModel(
+            id = stub.ownerId,
+            groups = setOf(
+                PropUserGroups.USER,
+                PropUserGroups.TEST,
             )
         ),
     )

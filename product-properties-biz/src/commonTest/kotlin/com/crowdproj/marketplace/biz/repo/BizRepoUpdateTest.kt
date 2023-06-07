@@ -4,6 +4,8 @@ import com.crowdproj.marketplace.biz.ProductPropertyProcessor
 import com.crowdproj.marketplace.common.PropContext
 import com.crowdproj.marketplace.common.PropCorSettings
 import com.crowdproj.marketplace.common.models.*
+import com.crowdproj.marketplace.common.permissions.PropPrincipalModel
+import com.crowdproj.marketplace.common.permissions.PropUserGroups
 import com.crowdproj.marketplace.common.repo.ProductPropertiesResponse
 import com.crowdproj.marketplace.common.repo.ProductPropertyResponse
 import com.crowdproj.marketplace.repository.tests.PropRepositoryMock
@@ -14,6 +16,7 @@ import kotlin.test.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class BizRepoUpdateTest {
+    private val userId = PropUserId("321")
     private val command = PropCommand.UPDATE
     private val initProp = ProductProperty(
         id = ProductPropertyId("123"),
@@ -22,7 +25,8 @@ class BizRepoUpdateTest {
         unitMain = ProductUnitId("100"),
         units = listOf(
             ProductUnitId("100"), ProductUnitId("200"), ProductUnitId("300")
-        )
+        ),
+        ownerId = userId
     )
     private val repo by lazy {
         PropRepositoryMock(
@@ -72,6 +76,13 @@ class BizRepoUpdateTest {
             state = PropState.NONE,
             workMode = PropWorkMode.TEST,
             propertyRequest = propToUpdate,
+            principal = PropPrincipalModel(
+                id = userId,
+                groups = setOf(
+                    PropUserGroups.USER,
+                    PropUserGroups.TEST,
+                )
+            ),
         )
         processor.exec(ctx)
         assertEquals(PropState.FINISHING, ctx.state)

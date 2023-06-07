@@ -1,12 +1,12 @@
 package com.crowdproj.marketplace.biz.validation
 
-import com.crowdproj.kotlin.cor.handlers.CorChainDsl
+import com.crowdproj.kotlin.cor.ICorAddExecDsl
 import com.crowdproj.kotlin.cor.handlers.worker
 import com.crowdproj.marketplace.common.PropContext
 import com.crowdproj.marketplace.common.helpers.errorValidation
 import com.crowdproj.marketplace.common.helpers.fail
 
-fun CorChainDsl<PropContext>.validateIdProperFormat(title: String) = worker {
+fun ICorAddExecDsl<PropContext>.validateIdProperFormat(title: String) = worker {
     this.title = title
 
     on { propValidating.id.checkFormat() }
@@ -24,7 +24,7 @@ fun CorChainDsl<PropContext>.validateIdProperFormat(title: String) = worker {
     }
 }
 
-fun CorChainDsl<PropContext>.validateIdsProperFormat(title: String) = worker {
+fun ICorAddExecDsl<PropContext>.validateIdsProperFormat(title: String) = worker {
     this.title = title
 
     on { propsValidating.any { it.id.checkFormat() } }
